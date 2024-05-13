@@ -52,9 +52,9 @@ class UserEnrolled(models.Model):
         ('role2', 'Role 2'),
     ])
     mycompany_id = models.IntegerField(unique=True)
-    tag_id = models.IntegerField(unique=True)
+    tag_id = models.IntegerField(unique=True,null=True,blank=True)
     job_location = models.CharField(max_length=100)
-    orientation = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['jpeg', 'jpg'])])
+    orientation = models.FileField(upload_to='attachments/', blank=True,null=True, validators=[FileExtensionValidator(['jpeg', 'jpg'])])
     facial_data = models.ImageField(upload_to='facial_data/', blank=True, null=True, verbose_name='Facial Data')
     status = models.CharField(max_length=10, choices=[
         ('active', 'Active'),

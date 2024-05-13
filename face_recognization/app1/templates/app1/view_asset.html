@@ -15,7 +15,7 @@
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 600px;
+            height: 700px;
         }
 
         header {
@@ -242,11 +242,10 @@
             <div class="dropdown">
                 <a href="{% url 'sites' %}">Site Management</a>
                 <div class="dropdown-content">
-                    <a href="{% url 'sites' %}">Link 1</a>
-                    <a href="{% url 'sites' %}">Link 2</a>
-                    <a href="{% url 'sites' %}">Link 3</a>
-                    <a href="{% url 'sites' %}">Link 4</a>
-                    <a href="{% url 'sites' %}">Link 5</a>
+                    <a href="{% url 'sites' %}">Site A</a>
+                    <a href="{% url 'sites' %}">Site B</a>
+                    <a href="{% url 'sites' %}">Site C</a>
+                    <a href="{% url 'sites' %}">Site D</a>
                 </div>
             </div>
             
@@ -282,6 +281,14 @@
             <tr>
                 <td><strong>Asset ID</strong></td>
                 <td>{{ asset.asset_id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Tag ID</strong></td>
+                <td>{{ asset.tag_id }}</td>
+            </tr>
+            <tr>
+                <td><strong>Footage</strong></td>
+                <td>{{ asset.footage }}</td>
             </tr>
             <tr>
                 <td><strong>Description</strong></td>

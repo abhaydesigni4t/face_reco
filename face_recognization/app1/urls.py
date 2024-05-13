@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi
+from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -73,7 +73,10 @@ urlpatterns = [
     path('update_safety_confirmation/', views.update_safety_confirmation, name='update_safety_confirmation'),
     path('sort_data/', views.sort_data, name='sort_data'),
     path('make_inactive_selected/', views.make_inactive_selected, name='make_inactive_selected'),
-    path('orientation_api/', views.OrientationListView.as_view(), name='orientation_api'),
+    path('get_orientation_api/', views.OrientationListView.as_view(), name='orientation_api'),
+    path('post_tagid/', UpdateTagIDAPIView.as_view(), name='post_tagid'),
+    path('post_orientation/', UpdateOrientationAPIView.as_view(), name='post_orientation'),
+    
 
 ] 
 

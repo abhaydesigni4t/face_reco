@@ -715,3 +715,50 @@ class FacialDataApi(APIView):
 class OrientationListView(generics.ListAPIView):
     queryset = Orientation.objects.all()
     serializer_class = OrientationSerializer
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserEnrolled
+from .serializers import UserEnrolledSerializer
+
+class UpdateTagIDAPIView(APIView):
+    def post(self, request, format=None):
+        mycompany_id = request.data.get('mycompany_id')
+        tag_id = request.data.get('tag_id')
+        if mycompany_id is not None and tag_id is not None:
+            try:
+                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
+            except UserEnrolled.DoesNotExist:
+                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
+            serializer = UserEnrolledSerializer(user, data={'tag_id': tag_id}, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'message': 'Tag ID updated successfully.'})
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'mycompany_id and tag_id are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserEnrolled
+from .serializers import UserEnrolledSerializer2
+
+class UpdateOrientationAPIView(APIView):
+    def post(self, request, format=None):
+        mycompany_id = request.data.get('mycompany_id')
+        orientation_file = request.FILES.get('orientation')
+        if mycompany_id is not None and orientation_file is not None:
+            try:
+                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
+            except UserEnrolled.DoesNotExist:
+                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
+            user.orientation = orientation_file
+            user.save()
+            return Response({'message': 'Orientation file uploaded successfully.'})
+        else:
+            return Response({'error': 'mycompany_id and orientation file are required.'}, status=status.HTTP_400_BAD_REQUEST)

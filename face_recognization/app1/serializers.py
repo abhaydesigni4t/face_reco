@@ -27,6 +27,19 @@ class UserEnrolledSerializer(serializers.ModelSerializer):
         fields = ['name','company_name','job_role','mycompany_id','tag_id','job_location','orientation','status']
        
 
+class UserEnrolledSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model = UserEnrolled
+        fields = ['mycompany_id','tag_id']
+       
+
+class UserEnrolledSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = UserEnrolled
+        fields = ['mycompany_id','orientation']
+
+
+
 class ExitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asset
