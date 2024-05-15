@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView
+from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView,LoginAPIApp
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -61,7 +61,6 @@ urlpatterns = [
     path('delete_selected/', views.delete_selected, name='delete_selected'),
     path('edit_turnstile/<int:pk>/', TurnstileUpdateView.as_view(), name='turnstile_edit'),
     path('turnstile_api/', Turnstile_API.as_view(), name='turnstile_api'),
-    path('face_api/', FacialDataApi.as_view(), name='face_api'),
     path('change_status/<int:asset_id>/', ChangeAssetStatus.as_view(), name='change_asset_status'),
     path('delete_selected1/', views.delete_selected1, name='delete_selected1'),
     path('turnstile/<int:turnstile_id>/', Turnstile_get_single_api.as_view(), name='turnstile-detail'),
@@ -76,8 +75,10 @@ urlpatterns = [
     path('get_orientation_api/', views.OrientationListView.as_view(), name='orientation_api'),
     path('post_tagid/', UpdateTagIDAPIView.as_view(), name='post_tagid'),
     path('post_orientation/', UpdateOrientationAPIView.as_view(), name='post_orientation'),
+    path('face_api/', FacialDataApi.as_view(), name='face_api'),
+    path('loginapi/', LoginAPIApp.as_view(), name='loginapi'), 
+    path('signupapi/', views.signup_api_app, name='signupapi'),
     
-
 ] 
 
 

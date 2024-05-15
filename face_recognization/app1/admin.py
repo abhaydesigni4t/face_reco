@@ -13,3 +13,4 @@ admin.site.register(timeschedule)
 admin.site.register(Upload_File)
 admin.site.register(Turnstile_S)
 admin.site.register(Orientation)
+

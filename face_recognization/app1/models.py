@@ -5,17 +5,23 @@ from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import FileExtensionValidator
 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils import timezone
+from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
+
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
+    def create_user(self, username, email=None, password=None, **extra_fields):
         if not username:
             raise ValueError("The username field must be set")
 
-        user = self.model(username=username, **extra_fields)
-        user.set_password(password)
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)  # Hash the password
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password=None, **extra_fields):
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -24,11 +30,11 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self.create_user(username, password, **extra_fields)
-
+        return self.create_user(username, email, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=50,unique=True)
+    username = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(unique=True)  # Add the email field
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
@@ -38,10 +44,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["first_name", "last_name"]
+    REQUIRED_FIELDS = ["email", "first_name", "last_name"]
 
     def __str__(self):
         return self.username
+
+
 
 class UserEnrolled(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
@@ -51,8 +59,8 @@ class UserEnrolled(models.Model):
         ('role1', 'Role 1'),
         ('role2', 'Role 2'),
     ])
-    mycompany_id = models.IntegerField(unique=True)
-    tag_id = models.IntegerField(unique=True,null=True,blank=True)
+    mycompany_id = models.CharField(max_length=10)
+    tag_id = models.CharField(max_length=50)
     job_location = models.CharField(max_length=100)
     orientation = models.FileField(upload_to='attachments/', blank=True,null=True, validators=[FileExtensionValidator(['jpeg', 'jpg'])])
     facial_data = models.ImageField(upload_to='facial_data/', blank=True, null=True, verbose_name='Facial Data')
@@ -60,6 +68,9 @@ class UserEnrolled(models.Model):
         ('active', 'Active'),
         ('inactive', 'Inactive'),
     ])
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=50)
+
     
     def __str__(self):
         return self.name
@@ -182,3 +193,5 @@ class Turnstile_S(models.Model):
 
 class Orientation(models.Model):
     attachments = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
+
+

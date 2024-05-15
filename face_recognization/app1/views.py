@@ -762,3 +762,51 @@ class UpdateOrientationAPIView(APIView):
             return Response({'message': 'Orientation file uploaded successfully.'})
         else:
             return Response({'error': 'mycompany_id and orientation file are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateFacialDataAPIView(APIView):
+    def post(self, request, format=None):
+        mycompany_id = request.data.get('mycompany_id')
+        facial_data_file = request.FILES.get('facial_data')
+        if mycompany_id is not None and facial_data_file is not None:
+            try:
+                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
+            except UserEnrolled.DoesNotExist:
+                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
+            user.facial_data = facial_data_file
+            user.save()
+            return Response({'message': 'Facial data file uploaded successfully.'})
+        else:
+            return Response({'error': 'mycompany_id and facial data file are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import LoginSerializerApp
+
+class LoginAPIApp(APIView):
+    def post(self, request, format=None):
+        serializer = LoginSerializerApp(data=request.data)
+        if serializer.is_valid():
+            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserEnrolled
+from .serializers import signup_app
+
+@api_view(['POST'])
+def signup_api_app(request):
+    serializer = signup_app(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Registration Successful"}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+

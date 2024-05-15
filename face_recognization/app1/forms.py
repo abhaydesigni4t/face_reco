@@ -15,7 +15,7 @@ class LoginForm(forms.Form):
 class YourModelForm(forms.ModelForm):
     class Meta:
         model = UserEnrolled
-        fields = '__all__'
+        exclude = ['password']
         widgets = {
             'orientation': forms.ClearableFileInput(attrs={'accept': 'application/pdf, application/msword, image/jpeg, image/jpg'}),
         }
@@ -91,3 +91,7 @@ class OrientationForm(forms.ModelForm):
     class Meta:
         model = Orientation
         fields = ['attachments']
+
+
+
+

@@ -89,3 +89,32 @@ class OrientationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
         
+
+from rest_framework import serializers
+
+
+class LoginSerializerApp(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+
+        if not email or not password:
+            raise serializers.ValidationError("Both email and password are required.")
+
+        user = UserEnrolled.objects.filter(email=email, password=password).first()
+        if not user:
+            raise serializers.ValidationError("Invalid email or password.")
+
+        return data
+
+
+from rest_framework import serializers
+from .models import UserEnrolled
+
+class signup_app(serializers.ModelSerializer):
+    class Meta:
+        model = UserEnrolled
+        fields = ['name', 'email', 'password']
