@@ -93,5 +93,10 @@ class OrientationForm(forms.ModelForm):
         fields = ['attachments']
 
 
+from .models import PreShift
 
+class PreshitForm(forms.ModelForm):
+    class Meta:
+        model = PreShift
+        fields = ['document']
 

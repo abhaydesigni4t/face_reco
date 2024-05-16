@@ -80,6 +80,9 @@ urlpatterns = [
     path('signupapi/', views.signup_api_app, name='signupapi'),
     path('site_docu/',views.site_document,name='site_docu'),
     path('preshift/',views.preshift,name='preshift'),
+    path('add_preshift/', views.add_preshift, name='add_preshift'),
+    path('edit_preshift/<int:pk>/', views.edit_preshift, name='edit_preshift'),
+    path('delete_preshift/<int:pk>/', views.delete_preshift, name='delete_preshift'),
     path('toolbox/',views.toolbox,name='toolbox'),
     
 ] 

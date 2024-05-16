@@ -334,6 +334,11 @@
             color: black;
             text-decoration: underline;
         }
+
+        .file-icon{
+            color : black
+
+        }
     </style>
 </head>
 
@@ -374,37 +379,40 @@
     </header>
     <h2>PreShift</h2>
     <div class="main-container">
-    <div class="main-content">
-        <a href="#" class="add-new-button">Add New</a>
-
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Documents</th>
-                <th>Data</th>
-                <th>Action</th>
-            </tr>
-            <tr>
-                <td>Site A</td>
-                <td>Doc</td>
-                <td>10-04-2023</td>
-                <td>
-                    <a href="#" class="view1">Edit</a>
-                    <a href="#" class="view2">Delete</a>
-                </td>
-            </tr>
-            <tr>
-                <td>Site A</td>
-                <td>Doc</td>
-                <td>16-08-2023</td>
-                <td>
-                    <a href="#" class="view1">Edit</a>
-                    <a href="#" class="view2">Delete</a>
-                </td>
-            </tr>
-          
-        </table>
-        
+        <div class="main-content">
+            <a href="{% url 'add_preshift' %}" class="add-new-button">Add New</a>
+            <table>
+                <tr>
+                    <th>Document</th>
+                    <th>Data</th>
+                    <th>Action</th>
+                </tr>
+                {% for document in documents %}
+                <tr>
+                    <td>
+                        {% if document.document %}
+                            {% with file_extension=document.document.name|lower|slice:"-4:" %}
+                                <a href="{{ document.document.url }}" target="_blank">
+                                    <i class="file-icon {% if file_extension == '.pdf' %}far fa-file-pdf
+                                                    {% elif file_extension == '.doc' or file_extension == '.docx' %}far fa-file-word
+                                                    {% elif file_extension == '.xls' or file_extension == '.xlsx' %}far fa-file-excel
+                                                    {% elif file_extension == '.ppt' or file_extension == '.pptx' %}far fa-file-powerpoint
+                                                    {% else %}far fa-file
+                                                {% endif %}"></i>
+                                </a>
+                            {% endwith %}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>   
+                    <td>{{ document.date }}</td>
+                    <td>
+                        <a href="{% url 'edit_preshift' pk=document.pk %}" class="view1">Edit</a>
+                        <a href="{% url 'delete_preshift' pk=document.pk %}" class="view2">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         
         <div class="pagination">
             <span class="step-links">

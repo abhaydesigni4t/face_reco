@@ -195,3 +195,13 @@ class Orientation(models.Model):
     attachments = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
 
 
+class PreShift(models.Model):
+    document = models.FileField(upload_to='preshift/') 
+    date = models.DateField(auto_now_add=True) 
+
+
+class ToolBox(models.Model):
+    document = models.FileField(upload_to='preshift/') 
+    date = models.DateField(auto_now_add=True) 
+
+

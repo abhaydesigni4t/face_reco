@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login,logout
-from .forms import LoginForm,NotificationForm,upload_form,YourModelForm,AssetForm,SiteForm,CompanyForm,timescheduleForm,TurnstileForm,OrientationForm
-from .models import CustomUser,UserEnrolled,Asset,Site,company,timeschedule,Notification,Upload_File,Turnstile_S,Orientation
-from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer
+from .forms import LoginForm,NotificationForm,upload_form,YourModelForm,AssetForm,SiteForm,CompanyForm,timescheduleForm,TurnstileForm,OrientationForm,PreshitForm
+from .models import CustomUser,UserEnrolled,Asset,Site,company,timeschedule,Notification,Upload_File,Turnstile_S,Orientation,PreShift
+from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer,signup_app,LoginSerializerApp,UserEnrolledSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -717,11 +717,6 @@ class OrientationListView(generics.ListAPIView):
     serializer_class = OrientationSerializer
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import UserEnrolled
-from .serializers import UserEnrolledSerializer
 
 class UpdateTagIDAPIView(APIView):
     def post(self, request, format=None):
@@ -742,11 +737,6 @@ class UpdateTagIDAPIView(APIView):
             return Response({'error': 'mycompany_id and tag_id are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import UserEnrolled
-from .serializers import UserEnrolledSerializer2
 
 class UpdateOrientationAPIView(APIView):
     def post(self, request, format=None):
@@ -780,12 +770,6 @@ class UpdateFacialDataAPIView(APIView):
             return Response({'error': 'mycompany_id and facial data file are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .serializers import LoginSerializerApp
-
 class LoginAPIApp(APIView):
     def post(self, request, format=None):
         serializer = LoginSerializerApp(data=request.data)
@@ -793,12 +777,6 @@ class LoginAPIApp(APIView):
             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import UserEnrolled
-from .serializers import signup_app
 
 @api_view(['POST'])
 def signup_api_app(request):
@@ -814,8 +792,50 @@ def site_document(request):
 
 
 def preshift(request):
-    return render(request,'app1/preshift.html')
+    documents = PreShift.objects.all()
+    return render(request,'app1/preshift.html',{'documents' : documents})
+
+
+def add_preshift(request):
+    if request.method == 'POST':
+        form = PreshitForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('preshift')
+    else:
+        form = PreshitForm()
+    
+    documents = PreShift.objects.all()
+    return render(request, 'app1/add_preshift.html', {'form': form, 'documents': documents})
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import PreShift
+
+def edit_preshift(request, pk):
+    preshift = get_object_or_404(PreShift, pk=pk)
+    if request.method == 'POST':
+        form = PreshitForm(request.POST, request.FILES, instance=preshift)
+        if form.is_valid():
+            form.save()
+            return redirect('preshift')
+    else:
+        form = PreshitForm(instance=preshift)
+    
+    return render(request, 'app1/edit_preshift.html', {'form': form, 'preshift': preshift})
+
+def delete_preshift(request, pk):
+    preshift = get_object_or_404(PreShift, pk=pk)
+    if request.method == 'POST':
+        preshift.delete()
+        return redirect('preshift')
+    
+    return render(request, 'app1/data_confirm_delete7.html', {'preshift': preshift})
+
+
 
 
 def toolbox(request):
     return render(request,'app1/toolbox.html')
+
+
