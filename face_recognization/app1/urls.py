@@ -78,6 +78,9 @@ urlpatterns = [
     path('face_api/', FacialDataApi.as_view(), name='face_api'),
     path('loginapi/', LoginAPIApp.as_view(), name='loginapi'), 
     path('signupapi/', views.signup_api_app, name='signupapi'),
+    path('site_docu/',views.site_document,name='site_docu'),
+    path('preshift/',views.preshift,name='preshift'),
+    path('toolbox/',views.toolbox,name='toolbox'),
     
 ] 
 

@@ -809,4 +809,13 @@ def signup_api_app(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+def site_document(request):
+    return render(request,'app1/site_documents.html')
 
+
+def preshift(request):
+    return render(request,'app1/preshift.html')
+
+
+def toolbox(request):
+    return render(request,'app1/toolbox.html')

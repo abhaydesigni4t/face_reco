@@ -14,3 +14,4 @@ admin.site.register(Upload_File)
 admin.site.register(Turnstile_S)
 admin.site.register(Orientation)
 
+
