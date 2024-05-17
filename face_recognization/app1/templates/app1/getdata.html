@@ -531,19 +531,22 @@
                     {% if i.facial_data %}
                     {% with file_extension=i.facial_data.name|lower %}
                     <a href="{{ i.facial_data.url }}" target="_blank">
-                        <i class="file-icon {% if file_extension|slice:"-4" == '.pdf' %}far fa-file-pdf
-                                    {% elif file_extension|slice:"-4" == '.doc' or file_extension|slice:"-5" == '.docx' %}far fa-file-word
-                                    {% elif file_extension|slice:"-5" == '.jpeg' or file_extension|slice:"-4" == '.jpg' or file_extension|slice:"-4" == '.png' %}far fa-file-image
-                                    {% elif file_extension|slice:"-4" == '.xls' or file_extension|slice:"-5" == '.xlsx' %}far fa-file-excel
-                                    {% elif file_extension|slice:"-4" == '.ppt' or file_extension|slice:"-5" == '.pptx' %}far fa-file-powerpoint
-                                    {% else %}far fa-file
-                                {% endif %}"></i>
+                        <i class="far fa-file-image
+                            {% if file_extension|slice:"-4" == '.pdf' %}far fa-file-pdf
+                            {% elif file_extension|slice:"-4" == '.doc' or file_extension|slice:"-5" == '.docx' %}far fa-file-word
+                            {% elif file_extension|slice:"-5" == '.jpeg' or file_extension|slice:"-4" == '.jpg' or file_extension|slice:"-4" == '.png' %}far fa-file-image
+                            {% elif file_extension|slice:"-4" == '.xls' or file_extension|slice:"-5" == '.xlsx' %}far fa-file-excel
+                            {% elif file_extension|slice:"-4" == '.ppt' or file_extension|slice:"-5" == '.pptx' %}far fa-file-powerpoint
+                            {% else %}far fa-file
+                            {% endif %}
+                        "></i>
                     </a>
                     {% endwith %}
                     {% else %}
                     N/A
                     {% endif %}
                 </td>
+                
                 <td>{{i.status}}</td>
                 <td>
                     <a href="{% url 'user_update' i.sr %}" class="edit-btn">Edit</a>

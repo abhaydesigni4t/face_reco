@@ -1,14 +1,11 @@
 from django.db import models
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import FileExtensionValidator
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.utils import timezone
-from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email=None, password=None, **extra_fields):
@@ -49,8 +46,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
-
-
 class UserEnrolled(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
     name = models.CharField(max_length=255)
@@ -84,7 +79,6 @@ class UserEnrolled(models.Model):
                 self.sr = 1
         super().save(*args, **kwargs)
     
-
 class Notification(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
     subject = models.CharField(max_length=255)
@@ -94,7 +88,6 @@ class Notification(models.Model):
     def __str__(self):
         return self.subject
 
-
 class Upload_data(models.Model):
     #uploaded_file = models.FileField(upload_to='uploads/') # it takes all files 
     uploaded_file = models.FileField(upload_to='uploads/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
@@ -102,10 +95,8 @@ class Upload_data(models.Model):
     def __str__(self):
         return str(self.uploaded_file)
     
-
 class Site_management(models.Model):
     link_field = models.URLField(max_length=200) 
-
 
 class Asset(models.Model):
     asset_id = models.IntegerField(unique=True)
@@ -125,18 +116,15 @@ class Asset(models.Model):
     def __str__(self):
         return self.asset_name
 
-    
 class check_changes(models.Model):
     name = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now=True) 
    
-
 class Site(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-
 
 class company(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
@@ -157,7 +145,6 @@ class company(models.Model):
                 self.sr = 1
         super().save(*args, **kwargs)
 
-
 class timeschedule(models.Model):
     group = models.CharField(max_length=100)
     active_time = models.CharField(max_length=50)
@@ -166,11 +153,9 @@ class timeschedule(models.Model):
     def __str__(self):
         return self.group
     
-
 class Upload_File(models.Model):
     #uploaded_file = models.FileField(upload_to='uploads/') # it takes all files 
     uploaded_file = models.FileField(upload_to='uploads/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
-
 
 class Turnstile_S(models.Model):
     sr_no = models.AutoField(primary_key=True,unique=True)
@@ -190,18 +175,15 @@ class Turnstile_S(models.Model):
                 self.sr_no = 1
         super().save(*args, **kwargs)
 
-
 class Orientation(models.Model):
     attachments = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
-
 
 class PreShift(models.Model):
     document = models.FileField(upload_to='preshift/') 
     date = models.DateField(auto_now_add=True) 
 
-
 class ToolBox(models.Model):
-    document = models.FileField(upload_to='preshift/') 
+    document = models.FileField(upload_to='toolbox/') 
     date = models.DateField(auto_now_add=True) 
 
 

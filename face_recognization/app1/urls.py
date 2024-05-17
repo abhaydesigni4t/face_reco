@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView,LoginAPIApp
+from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView,LoginAPIApp,PreShiftListCreateAPIView,ToolBoxListCreateAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -84,6 +84,11 @@ urlpatterns = [
     path('edit_preshift/<int:pk>/', views.edit_preshift, name='edit_preshift'),
     path('delete_preshift/<int:pk>/', views.delete_preshift, name='delete_preshift'),
     path('toolbox/',views.toolbox,name='toolbox'),
+    path('add_toolbox/', views.add_toolbox, name='add_toolbox'),
+    path('edit_toolbox/<int:pk>/', views.edit_toolbox, name='edit_toolbox'),
+    path('delete_toolbox/<int:pk>/', views.delete_toolbox, name='delete_toolbox'),
+    path('preshift_api/', PreShiftListCreateAPIView.as_view(), name='preshift_api'),
+    path('toolbox_api/', ToolBoxListCreateAPIView.as_view(), name='toolbox_api'),
     
 ] 
 

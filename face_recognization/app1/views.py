@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login,logout
-from .forms import LoginForm,NotificationForm,upload_form,YourModelForm,AssetForm,SiteForm,CompanyForm,timescheduleForm,TurnstileForm,OrientationForm,PreshitForm
-from .models import CustomUser,UserEnrolled,Asset,Site,company,timeschedule,Notification,Upload_File,Turnstile_S,Orientation,PreShift
-from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer,signup_app,LoginSerializerApp,UserEnrolledSerializer
+from .forms import LoginForm,NotificationForm,upload_form,YourModelForm,AssetForm,SiteForm,CompanyForm,timescheduleForm,TurnstileForm,OrientationForm,PreshitForm,ToolboxForm
+from .models import CustomUser,UserEnrolled,Asset,Site,company,timeschedule,Notification,Upload_File,Turnstile_S,Orientation,PreShift,ToolBox
+from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer,signup_app,LoginSerializerApp,UserEnrolledSerializer,AssetStatusSerializer,PreShiftSerializer,ToolBoxSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -99,7 +99,6 @@ def upload_file(request):
         form = upload_form()
     return render(request, 'app1/upload.html', {'form': form})
 
-
 def report_view(request):
     try:
         active_users = UserEnrolled.objects.filter(status='active').count()
@@ -155,7 +154,6 @@ class TaskDeleteView(DeleteView):
     template_name = 'app1/data_confirm_delete.html'
     success_url = reverse_lazy('get_all')
 
-
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -172,7 +170,6 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'app1/app2_login.html', {'form': form})
 
-
 def app2_logout(request):
     logout(request)
     return redirect('app2_login')
@@ -180,13 +177,11 @@ def app2_logout(request):
 def management_view(request):
     return render(request,'app1/management.html')
 
-
 def edit_worker(request):
     return render(request,'app1/worker_edit.html')
 
 def asset_management(request):
     return render(request,'app1/asset_management.html')
-
 
 def add_asset(request):
     if request.method == 'POST':
@@ -201,9 +196,6 @@ def add_asset(request):
         form = AssetForm()
     return render(request, 'app1/add_asset.html', {'form': form})
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AssetForm  # Import your AssetForm
-from django.core.exceptions import ValidationError
 
 def update_asset(request, asset_id):
     asset = get_object_or_404(Asset, asset_id=asset_id)
@@ -221,13 +213,6 @@ def update_asset(request, asset_id):
     
     return render(request, 'app1/add_asset.html', {'form': form})
 
-
-
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .models import Asset
-
 def asset_site(request):
     assets = Asset.objects.all()
     paginator = Paginator(assets, 8)
@@ -237,11 +222,9 @@ def asset_site(request):
 
     return render(request, 'app1/asset_site.html', {'assets': assets})
 
-
 def asset_details(request, asset_id):
     asset = get_object_or_404(Asset, asset_id=asset_id)
     return render(request, 'app1/view_asset.html', {'asset': asset})
-
 
 class DownloadDatabaseView(APIView):
     def get(self, request, *args, **kwargs):  
@@ -268,7 +251,6 @@ def site_view(request):
         'inactive_users': inactive_users,
     })
 
-
 def time_shedule(request):
     return render(request,'app1/time_shedule.html')
 
@@ -276,13 +258,11 @@ def setting_turn(request):
     turnstiles = Turnstile_S.objects.all()
     return render(request, 'app1/setting_turn.html', {'turnstiles': turnstiles})
 
-
 class ActionStatusAPIView(APIView):
     def get(self, request, *args, **kwargs):
         status_data = {'status': 1 if ActionStatusMiddleware.perform_action() else 0}
         serializer = ActionStatusSerializer(status_data)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class ChangeDetectionView(APIView):
     def get(self, request, *args, **kwargs):
@@ -306,7 +286,6 @@ def book_delete_handler(sender, instance, **kwargs):
    
     cache.set('has_changes', True)
 
-
 class LoginAPIView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -322,7 +301,6 @@ class LoginAPIView(APIView):
                 return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
 class AssetCreateAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = AssetSerializer(data=request.data)
@@ -331,11 +309,9 @@ class AssetCreateAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class AssetListAPIView(generics.ListAPIView):
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
-
 
 class UserEnrollListCreateAPIView(generics.ListCreateAPIView):
     queryset = UserEnrolled.objects.all()
@@ -343,7 +319,6 @@ class UserEnrollListCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(orientation=self.request.data.get('orientation'))
-
 
 class UserEnrollDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserEnrolled.objects.all()
@@ -355,11 +330,9 @@ class UserEnrollDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         obj = generics.get_object_or_404(queryset, tag_id=tag_id) 
         return obj
 
-
 class ExitListCreateAPIView(generics.ListCreateAPIView):
     queryset = Asset.objects.all()
     serializer_class = ExitSerializer
-
 
 class ExitDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Asset.objects.all()
@@ -369,7 +342,6 @@ class ExitDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         asset_id = self.kwargs.get('asset_id')
         obj = generics.get_object_or_404(queryset, asset_id=asset_id)
         return obj
-
 
 class SiteListAPIView(generics.ListAPIView):
     queryset = Site.objects.all()
@@ -399,12 +371,10 @@ class SiteUpdateView(UpdateView):
         
         return self.render_to_response({'form': form})
 
-
 class SiteDeleteView(DeleteView):
     model = Site
     template_name = 'app1/data_confirm_delete2.html'
     success_url = reverse_lazy('sites')
-
 
 def company_view(request):
     compy = company.objects.all() 
@@ -420,7 +390,6 @@ def add_company_data(request):
         form = CompanyForm()
     return render(request, 'app1/add_company.html', {'form': form})
 
-
 class CompanyUpdateView(UpdateView):
     model = company
     form_class = CompanyForm
@@ -435,22 +404,18 @@ class CompanyUpdateView(UpdateView):
         
         return self.render_to_response({'form': form})
 
-
 class CompanyDeleteView(DeleteView):
     model = company
     template_name = 'app1/data_confirm_delete3.html'
     success_url = reverse_lazy('company')
 
-
 def timesche(request):
     data = timeschedule.objects.all()
     return render(request, 'app1/time_shedule.html', {'data': data})
 
-
 class NotificationList(generics.ListAPIView):
     queryset = Notification.objects.all().order_by('-sr')
     serializer_class = NotificationSerializer
-
 
 class FileUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -472,7 +437,6 @@ def add_timesh(request):
     else:
         form = timescheduleForm()
     return render(request, 'app1/add_time.html', {'form': form})
-
 
 def edit_timeschedule(request, id):
     instance = get_object_or_404(timeschedule, id=id)
@@ -504,7 +468,6 @@ def add_turnstile(request):
         form = TurnstileForm()
     return render(request, 'app1/add_turnstile.html', {'form': form})
 
-
 def delete_selected(request):
     if request.method == 'POST':
         selected_records = request.POST.getlist('selected_recordings')
@@ -527,7 +490,6 @@ class Turnstile_API(APIView):
         serializer = TurnstileSerializer(turnstiles, many=True)
         return Response(serializer.data)
 
-
 def delete_selected1(request):
     if request.method == 'POST':
         selected_records = request.POST.getlist('selected_recordings')
@@ -537,13 +499,11 @@ def delete_selected1(request):
         return redirect('exit')  
     return redirect('exit')
 
-
 class Turnstile_get_single_api(generics.RetrieveAPIView):
     queryset = Turnstile_S.objects.all()
     serializer_class = TurnstileSerializer
     lookup_field = 'turnstile_id'
         
-
 def delete_selected2(request):
     if request.method == 'POST':
         selected_records = request.POST.getlist('selected_recordings')
@@ -553,12 +513,9 @@ def delete_selected2(request):
         return redirect('get_all')  
     return redirect('get_all')
 
-
-
 def notification_view(request):
     noti_data =  Notification.objects.all() 
     return render(request, 'app1/notification1.html', {'noti_data': noti_data})
-
 
 def orientation_task(request):
     if request.method == 'POST':
@@ -571,9 +528,6 @@ def orientation_task(request):
     else:
         form = OrientationForm()
     return render(request, 'app1/orientation.html', {'form': form})
-
-
-from .serializers import AssetStatusSerializer
 
 class ChangeAssetStatus(APIView):
     def put(self, request, asset_id):
@@ -588,7 +542,6 @@ class ChangeAssetStatus(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 def delete_selected3(request):
     if request.method == 'POST':
         selected_ids = request.POST.getlist('selected_records')
@@ -598,7 +551,6 @@ def delete_selected3(request):
     else:
         return render(request, 'app1/getdata.html', {'data': UserEnrolled.objects.all()})
 
-
 def delete_selected4(request):
     if request.method == 'POST':
         selected_records = request.POST.getlist('selected_recordings')
@@ -607,11 +559,6 @@ def delete_selected4(request):
         Turnstile_S.objects.filter(pk__in=selected_records).delete()
         return redirect('setting_t')  
     return redirect('setting_t')
-
-
-from django.shortcuts import render, redirect
-from .models import Turnstile_S
-
 
 def update_safety_confirmation(request):
     if request.method == 'POST' and request.is_ajax():
@@ -625,7 +572,6 @@ def update_safety_confirmation(request):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method or not an AJAX request'})
-
 
 def sort_data(request):
    
@@ -669,14 +615,12 @@ def sort_data(request):
     }
     return render(request, 'app1/getdata.html', context)
 
-
 def make_inactive_selected(request):
     if request.method == 'POST':
         selected_record_ids = request.POST.getlist('selected_recordings')
 
         UserEnrolled.objects.filter(pk__in=selected_record_ids).update(status='inactive')
     return redirect('get_all')
-
 
 class FacialDataApi(APIView):
     parser_classes = (MultiPartParser,)
@@ -711,12 +655,9 @@ class FacialDataApi(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
 class OrientationListView(generics.ListAPIView):
     queryset = Orientation.objects.all()
     serializer_class = OrientationSerializer
-
-
 
 class UpdateTagIDAPIView(APIView):
     def post(self, request, format=None):
@@ -736,8 +677,6 @@ class UpdateTagIDAPIView(APIView):
         else:
             return Response({'error': 'mycompany_id and tag_id are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 class UpdateOrientationAPIView(APIView):
     def post(self, request, format=None):
         mycompany_id = request.data.get('mycompany_id')
@@ -752,7 +691,6 @@ class UpdateOrientationAPIView(APIView):
             return Response({'message': 'Orientation file uploaded successfully.'})
         else:
             return Response({'error': 'mycompany_id and orientation file are required.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class UpdateFacialDataAPIView(APIView):
     def post(self, request, format=None):
@@ -769,14 +707,12 @@ class UpdateFacialDataAPIView(APIView):
         else:
             return Response({'error': 'mycompany_id and facial data file are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class LoginAPIApp(APIView):
     def post(self, request, format=None):
         serializer = LoginSerializerApp(data=request.data)
         if serializer.is_valid():
             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['POST'])
 def signup_api_app(request):
@@ -786,15 +722,12 @@ def signup_api_app(request):
         return Response({"message": "Registration Successful"}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 def site_document(request):
     return render(request,'app1/site_documents.html')
-
 
 def preshift(request):
     documents = PreShift.objects.all()
     return render(request,'app1/preshift.html',{'documents' : documents})
-
 
 def add_preshift(request):
     if request.method == 'POST':
@@ -807,10 +740,6 @@ def add_preshift(request):
     
     documents = PreShift.objects.all()
     return render(request, 'app1/add_preshift.html', {'form': form, 'documents': documents})
-
-
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import PreShift
 
 def edit_preshift(request, pk):
     preshift = get_object_or_404(PreShift, pk=pk)
@@ -832,10 +761,48 @@ def delete_preshift(request, pk):
     
     return render(request, 'app1/data_confirm_delete7.html', {'preshift': preshift})
 
-
-
-
 def toolbox(request):
-    return render(request,'app1/toolbox.html')
+    documents = ToolBox.objects.all()
+    return render(request,'app1/toolbox.html',{'documents' : documents})
+
+def add_toolbox(request):
+    if request.method == 'POST':
+        form =ToolboxForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('toolbox')
+    else:
+        form = ToolboxForm()
+    
+    documents = ToolBox.objects.all()
+    return render(request, 'app1/add_toolbox.html', {'form': form, 'documents': documents})
+
+def edit_toolbox(request, pk):
+    toolbox = get_object_or_404(ToolBox, pk=pk)
+    if request.method == 'POST':
+        form = ToolboxForm(request.POST, request.FILES, instance=toolbox)
+        if form.is_valid():
+            form.save()
+            return redirect('toolbox')
+    else:
+        form = ToolboxForm(instance=toolbox)
+    
+    return render(request, 'app1/edit_toolbox.html', {'form': form, 'toolbox': toolbox})
+
+def delete_toolbox(request, pk):
+    toolbox = get_object_or_404(ToolBox, pk=pk)
+    if request.method == 'POST':
+        toolbox.delete()
+        return redirect('toolbox')
+    
+    return render(request, 'app1/data_confirm_delete7.html', {'toolbox': toolbox})
+
+class PreShiftListCreateAPIView(generics.ListCreateAPIView):
+    queryset = PreShift.objects.all()
+    serializer_class = PreShiftSerializer
+
+class ToolBoxListCreateAPIView(generics.ListCreateAPIView):
+    queryset = ToolBox.objects.all()
+    serializer_class = ToolBoxSerializer
 
 
