@@ -21,7 +21,6 @@ class YourModelForm(forms.ModelForm):
         labels = {
             'orientation': 'Orientation:',
         }
-        
     #job_role = forms.ChoiceField(choices=UserEnrolled.job_role, widget=forms.Select(attrs={'class': 'form-control'}))
 
 class NotificationForm(forms.ModelForm):

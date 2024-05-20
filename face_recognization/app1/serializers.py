@@ -26,7 +26,7 @@ class UserEnrolledSerializer(serializers.ModelSerializer):
 class UserEnrolledSerializer1(serializers.ModelSerializer):
     class Meta:
         model = UserEnrolled
-        fields = ['mycompany_id','tag_id']
+        fields = ['email','tag_id']
        
 class UserEnrolledSerializer2(serializers.ModelSerializer):
     class Meta:
@@ -71,7 +71,7 @@ class AssetStatusSerializer(serializers.ModelSerializer):
 class facialDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserEnrolled
-        fields = ('mycompany_id', 'facial_data')
+        fields = ('email', 'facial_data')
 
 class OrientationSerializer(serializers.ModelSerializer):
     class Meta:

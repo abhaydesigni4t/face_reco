@@ -2,12 +2,11 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate, login,logout
 from .forms import LoginForm,NotificationForm,upload_form,YourModelForm,AssetForm,SiteForm,CompanyForm,timescheduleForm,TurnstileForm,OrientationForm,PreshitForm,ToolboxForm
 from .models import CustomUser,UserEnrolled,Asset,Site,company,timeschedule,Notification,Upload_File,Turnstile_S,Orientation,PreShift,ToolBox
-from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer,signup_app,LoginSerializerApp,UserEnrolledSerializer,AssetStatusSerializer,PreShiftSerializer,ToolBoxSerializer
+from .serializers import LoginSerializer,AssetSerializer,UserEnrolledSerializer,ExitSerializer,SiteSerializer,ActionStatusSerializer,NotificationSerializer,UploadedFileSerializer,TurnstileSerializer,facialDataSerializer,OrientationSerializer,signup_app,LoginSerializerApp,UserEnrolledSerializer1,AssetStatusSerializer,PreShiftSerializer,ToolBoxSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .serializers import UserEnrolledSerializer
 from django.views.generic.list import ListView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
@@ -627,11 +626,11 @@ class FacialDataApi(APIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            mycompany_id = request.data.get('mycompany_id')
+            email = request.data.get('email')
             facial_data = request.FILES.get('facial_data')
 
-            if mycompany_id:
-                user_enrolled = UserEnrolled.objects.filter(mycompany_id=mycompany_id).first()
+            if email:
+                user_enrolled = UserEnrolled.objects.filter(email=email).first()
 
                 if user_enrolled:
                     if facial_data:
@@ -642,7 +641,7 @@ class FacialDataApi(APIView):
                 else:
                     if facial_data:
                         user_enrolled = UserEnrolled.objects.create(
-                            mycompany_id=mycompany_id,
+                            email=email,
                             facial_data=facial_data
                         )
                     else:
@@ -651,7 +650,7 @@ class FacialDataApi(APIView):
                 serializer = facialDataSerializer(user_enrolled)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({'error': 'Missing mycompany_id parameter'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Missing email parameter'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
@@ -661,51 +660,40 @@ class OrientationListView(generics.ListAPIView):
 
 class UpdateTagIDAPIView(APIView):
     def post(self, request, format=None):
-        mycompany_id = request.data.get('mycompany_id')
+        email = request.data.get('email')
         tag_id = request.data.get('tag_id')
-        if mycompany_id is not None and tag_id is not None:
+        if email is not None and tag_id is not None:
             try:
-                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
+                user = UserEnrolled.objects.get(email=email)
             except UserEnrolled.DoesNotExist:
-                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
-            serializer = UserEnrolledSerializer(user, data={'tag_id': tag_id}, partial=True)
+                return Response({'error': 'User not found for the provided email.'}, status=status.HTTP_404_NOT_FOUND)
+            serializer = UserEnrolledSerializer1(user, data={'tag_id': tag_id}, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'message': 'Tag ID updated successfully.'})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({'error': 'mycompany_id and tag_id are required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'email and tag_id are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UpdateOrientationAPIView(APIView):
     def post(self, request, format=None):
-        mycompany_id = request.data.get('mycompany_id')
+        email = request.data.get('email')
         orientation_file = request.FILES.get('orientation')
-        if mycompany_id is not None and orientation_file is not None:
+        
+        if email is not None and orientation_file is not None:
             try:
-                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
+                user = UserEnrolled.objects.get(email=email)
             except UserEnrolled.DoesNotExist:
-                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'error': 'User not found for the provided email.'}, status=status.HTTP_404_NOT_FOUND)
+            
             user.orientation = orientation_file
             user.save()
+            
             return Response({'message': 'Orientation file uploaded successfully.'})
         else:
-            return Response({'error': 'mycompany_id and orientation file are required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-class UpdateFacialDataAPIView(APIView):
-    def post(self, request, format=None):
-        mycompany_id = request.data.get('mycompany_id')
-        facial_data_file = request.FILES.get('facial_data')
-        if mycompany_id is not None and facial_data_file is not None:
-            try:
-                user = UserEnrolled.objects.get(mycompany_id=mycompany_id)
-            except UserEnrolled.DoesNotExist:
-                return Response({'error': 'User not found for the provided mycompany_id.'}, status=status.HTTP_404_NOT_FOUND)
-            user.facial_data = facial_data_file
-            user.save()
-            return Response({'message': 'Facial data file uploaded successfully.'})
-        else:
-            return Response({'error': 'mycompany_id and facial data file are required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Email and orientation file are required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class LoginAPIApp(APIView):
     def post(self, request, format=None):
