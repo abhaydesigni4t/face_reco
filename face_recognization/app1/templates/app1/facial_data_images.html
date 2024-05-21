@@ -1,0 +1,19 @@
+<!-- facial_data_images.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facial Data Images</title>
+    {% load static %}
+
+</head>
+<body>
+    <h1>Facial Data Images</h1>
+    {% for image in facial_data_images %}
+        <img src="{{ image }}" alt="Facial Data Image">
+    {% endfor %}
+</body>
+
+
+</html>

@@ -530,7 +530,7 @@
                 <td>
                     {% if i.facial_data %}
                     {% with file_extension=i.facial_data.name|lower %}
-                    <a href="{{ i.facial_data.url }}" target="_blank">
+                    <a href="{% url 'show_facial_data_images' i.pk %}" target="_blank">
                         <i class="far fa-file-image
                             {% if file_extension|slice:"-4" == '.pdf' %}far fa-file-pdf
                             {% elif file_extension|slice:"-4" == '.doc' or file_extension|slice:"-5" == '.docx' %}far fa-file-word

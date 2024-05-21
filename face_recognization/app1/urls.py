@@ -90,7 +90,7 @@ urlpatterns = [
     path('preshift_api/', PreShiftListCreateAPIView.as_view(), name='preshift_api'),
     path('toolbox_api/', ToolBoxListCreateAPIView.as_view(), name='toolbox_api'),
     path('user_profile_api/', UserProfileCreateAPIView.as_view(), name='user_profile_api'),
-
+    path('user/<int:user_id>/', views.show_facial_data_images, name='show_facial_data_images'),
 
 
 ] 

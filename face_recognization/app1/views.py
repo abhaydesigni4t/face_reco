@@ -831,3 +831,21 @@ class UserProfileCreateAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+import os
+from django.shortcuts import render
+from .models import UserEnrolled
+
+def show_facial_data_images(request, user_id):
+    user = UserEnrolled.objects.get(pk=user_id)
+    user_folder = os.path.join('media', 'facial_data', user.name)
+    facial_data_images = []
+
+    if os.path.exists(user_folder):
+        for filename in os.listdir(user_folder):
+            if filename.endswith(('.jpeg', '.jpg', '.png')):
+                facial_data_images.append(os.path.join('/', user_folder, filename))
+
+    return render(request, 'app1/facial_data_images.html', {'facial_data_images': facial_data_images})
