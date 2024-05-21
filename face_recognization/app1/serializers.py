@@ -109,3 +109,27 @@ class ToolBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToolBox
         fields = ['document', 'date']
+
+
+from rest_framework import serializers
+
+class FacialImageDataSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    facial_data = serializers.ListField(child=serializers.ImageField())
+
+
+# serializers.py
+from rest_framework import serializers
+from .models import UserEnrolled
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = UserEnrolled
+        fields = ['name', 'company_name', 'job_role', 'mycompany_id', 'job_location']
+       
+    def create(self, validated_data):
+        if 'status' not in validated_data:
+            validated_data['status'] = 'active'
+        return UserEnrolled.objects.create(**validated_data)
+

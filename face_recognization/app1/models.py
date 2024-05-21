@@ -46,6 +46,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+from django.core.validators import FileExtensionValidator
+
+import os
+
+def user_image_upload_path(instance, filename):
+    base_filename, file_extension = os.path.splitext(filename)
+    return f'facial_data/{instance.name}/{base_filename}{file_extension}'
+
 class UserEnrolled(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
     name = models.CharField(max_length=255)
@@ -58,12 +66,12 @@ class UserEnrolled(models.Model):
     tag_id = models.CharField(max_length=50)
     job_location = models.CharField(max_length=100)
     orientation = models.FileField(upload_to='attachments/', blank=True,null=True, validators=[FileExtensionValidator(['jpeg', 'jpg'])])
-    facial_data = models.ImageField(upload_to='facial_data/', blank=True, null=True, verbose_name='Facial Data')
+    facial_data = models.ImageField(upload_to=user_image_upload_path, blank=True, null=True, verbose_name='Facial Data')
     status = models.CharField(max_length=10, choices=[
         ('active', 'Active'),
         ('inactive', 'Inactive'),
     ])
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     password = models.CharField(max_length=50)
 
     
@@ -78,6 +86,7 @@ class UserEnrolled(models.Model):
             else:
                 self.sr = 1
         super().save(*args, **kwargs)
+    
     
 class Notification(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)

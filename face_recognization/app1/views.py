@@ -621,7 +621,7 @@ def make_inactive_selected(request):
         UserEnrolled.objects.filter(pk__in=selected_record_ids).update(status='inactive')
     return redirect('get_all')
 
-class FacialDataApi(APIView):
+class FacialDataApi_extra(APIView):
     parser_classes = (MultiPartParser,)
 
     def post(self, request, *args, **kwargs):
@@ -699,7 +699,10 @@ class LoginAPIApp(APIView):
     def post(self, request, format=None):
         serializer = LoginSerializerApp(data=request.data)
         if serializer.is_valid():
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+            email = serializer.validated_data['email']
+            user = UserEnrolled.objects.get(email=email)
+            name = user.name
+            return Response({'message': 'Login successful', 'name': name}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -794,3 +797,37 @@ class ToolBoxListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ToolBoxSerializer
 
 
+from django.conf import settings
+import os
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import FacialImageDataSerializer
+
+class FacialDataApi(APIView):
+    def post(self, request):
+        serializer = FacialImageDataSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            images = serializer.validated_data['facial_data']
+            try:
+                user = UserEnrolled.objects.get(email=email)
+                for image in images:
+                    user.facial_data = image
+                    user.save()
+                return Response("Images uploaded successfully", status=status.HTTP_200_OK)
+            except UserEnrolled.DoesNotExist:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+from .serializers import UserProfileSerializer
+
+class UserProfileCreateAPIView(APIView):
+    def post(self, request):
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
