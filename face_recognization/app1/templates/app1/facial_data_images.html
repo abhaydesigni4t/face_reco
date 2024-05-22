@@ -8,12 +8,72 @@
     {% load static %}
 
 </head>
-<body>
-    <h1>Facial Data Images</h1>
-    {% for image in facial_data_images %}
-        <img src="{{ image }}" alt="Facial Data Image">
-    {% endfor %}
-</body>
+<style>
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .image-container .image-wrapper {
+        position: relative;
+        width: calc(33.33% - 10px);
+        margin-bottom: 10px;
+     
+    }
+    .image-container .image-wrapper img {
+        width: 60%;
+        height: 60%;
+        margin-bottom: 5px;
+       
+    }
+    .image-container .image-wrapper .button-container {
+        position: absolute;
+        bottom: 0;
+        left: 5px; 
+        right: 150px;
+        text-align: center;
+        margin-top: 20px; 
+    }
 
+  
+    .image-container .image-wrapper .button-container a {
+        margin: 5px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .image-container .image-wrapper .button-container .delete-btn {
+        background-color: #f2463d;
+    }
+
+    h1{
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .image-wrapper{
+        margin-right: -90px;
+        margin-left: 60px;
+    }
+</style>
+</head>
+<body>
+<h1>Facial Data Images</h1>
+<div class="image-container">
+    {% for image in facial_data_images %}
+        <div class="image-wrapper">
+            <img src="{{ image }}" alt="Facial Data Image">
+            <div class="button-container">
+                <a href="#" class="edit-btn">Edit</a>
+                <a href="#" class="delete-btn">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</body>
 
 </html>
