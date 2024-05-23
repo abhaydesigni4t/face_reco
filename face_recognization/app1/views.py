@@ -526,7 +526,18 @@ def orientation_task(request):
             print(form.errors)
     else:
         form = OrientationForm()
-    return render(request, 'app1/orientation.html', {'form': form})
+    latest_orientation = Orientation.objects.last()
+ 
+    return render(request, 'app1/orientation.html', {'form': form, 'latest_orientation': latest_orientation})
+
+def view_attachment(request, attachment_id):
+    # Retrieve the attachment by ID (or any other identifier you use)
+    orientation = Orientation.objects.get(id=attachment_id)
+    # Assuming you have a 'attachments' field in your Orientation model
+    attachment = orientation.attachments
+    # Serve the attachment file
+    response = HttpResponse(attachment, content_type='application/pdf')
+    return response
 
 class ChangeAssetStatus(APIView):
     def put(self, request, asset_id):
@@ -797,11 +808,6 @@ class ToolBoxListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ToolBoxSerializer
 
 
-from django.conf import settings
-import os
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from .serializers import FacialImageDataSerializer
 
 class FacialDataApi(APIView):
@@ -833,11 +839,6 @@ class UserProfileCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-import os
-from django.shortcuts import render
-from .models import UserEnrolled
-
 def show_facial_data_images(request, user_id):
     user = UserEnrolled.objects.get(pk=user_id)
     user_folder = os.path.join('media', 'facial_data', user.name)
@@ -849,3 +850,60 @@ def show_facial_data_images(request, user_id):
                 facial_data_images.append(os.path.join('/', user_folder, filename))
 
     return render(request, 'app1/facial_data_images.html', {'facial_data_images': facial_data_images})
+
+
+class OrientationCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = OrientationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def view_attachment(request, attachment_id):
+    orientation = Orientation.objects.get(id=attachment_id)
+    attachment = orientation.attachments
+    response = HttpResponse(attachment, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename=' + attachment.name
+    return response
+
+
+from .serializers import UserComplySerializer
+
+from rest_framework.parsers import MultiPartParser, FormParser
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserEnrolled
+from .serializers import UserComplySerializer
+
+class UserComplyAPIView(APIView):
+    def post(self, request, format=None):
+        # Extract email and my_comply from request data
+        email = request.data.get('email')
+        my_comply_file = request.FILES.get('my_comply')
+        
+        if email is not None and my_comply_file is not None:
+            try:
+                # Retrieve the user object based on the provided email
+                user = UserEnrolled.objects.get(email=email)
+            except UserEnrolled.DoesNotExist:
+                # If the user does not exist, return a 404 response
+                return Response({'error': 'User not found for the provided email.'}, status=status.HTTP_404_NOT_FOUND)
+            
+            # Create a serializer instance with the extracted data
+            serializer = UserComplySerializer(instance=user, data={'my_comply': my_comply_file}, partial=True)
+            if serializer.is_valid():
+                # Save the updated my_comply file to the user object
+                serializer.save()
+                
+                # Return a success response
+                return Response({'message': 'my_comply file uploaded successfully.'})
+            else:
+                # If the serializer data is not valid, return a 400 response with the validation errors
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # If email or my_comply_file is missing, return a 400 response
+            return Response({'error': 'Email and my_comply file are required.'}, status=status.HTTP_400_BAD_REQUEST)

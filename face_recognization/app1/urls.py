@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView,LoginAPIApp,PreShiftListCreateAPIView,ToolBoxListCreateAPIView,UserProfileCreateAPIView
+from .views import UserEnrolledListCreateView,UserEnrolledRetrieveUpdateDestroyView,get_data,create_data,UpdateData,TaskDeleteView,DownloadDatabaseView,ActionStatusAPIView,ChangeDetectionView,LoginAPIView,AssetCreateAPIView,AssetListAPIView,UserEnrollListCreateAPIView,UserEnrollDetailAPIView,SiteListAPIView,SiteUpdateView,SiteDeleteView,CompanyUpdateView,CompanyDeleteView,NotificationList,FileUploadView,edit_timeschedule,delete_timeschedule,TurnstileUpdateView,Turnstile_API,Turnstile_get_single_api,ChangeAssetStatus,FacialDataApi,UpdateTagIDAPIView,UpdateOrientationAPIView,LoginAPIApp,PreShiftListCreateAPIView,ToolBoxListCreateAPIView,UserProfileCreateAPIView,OrientationCreateView,UserComplyAPIView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -91,8 +91,9 @@ urlpatterns = [
     path('toolbox_api/', ToolBoxListCreateAPIView.as_view(), name='toolbox_api'),
     path('user_profile_api/', UserProfileCreateAPIView.as_view(), name='user_profile_api'),
     path('user/<int:user_id>/', views.show_facial_data_images, name='show_facial_data_images'),
-
-
+    path('post_orientation_sheet/', OrientationCreateView.as_view(), name='post_orientation_sheet'),
+    path('attachment/<int:attachment_id>/', views.view_attachment, name='view_attachment'),
+    path('mycomply_api/', UserComplyAPIView.as_view(), name='mycomply_api'),
 ] 
 
 

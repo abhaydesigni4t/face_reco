@@ -62,18 +62,19 @@
 </style>
 </head>
 <body>
-<h1>Facial Data Images</h1>
-<div class="image-container">
-    {% for image in facial_data_images %}
-        <div class="image-wrapper">
-            <img src="{{ image }}" alt="Facial Data Image">
-            <div class="button-container">
-                <a href="#" class="edit-btn">Edit</a>
-                <a href="#" class="delete-btn">Delete</a>
+    <h1>Facial Data Images</h1>
+    <div class="image-container">
+        {% for image in facial_data_images %}
+            <div class="image-wrapper">
+                <img src="{{ image }}" alt="Facial Data Image">
+                <div class="button-container">
+                 
+                    <a href="#" class="delete-btn">Delete</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
-</body>
-
+        {% endfor %}
+    </div>
+    </body>
+    
+    
 </html>

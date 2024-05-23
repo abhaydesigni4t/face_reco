@@ -67,6 +67,7 @@ class UserEnrolled(models.Model):
     job_location = models.CharField(max_length=100)
     orientation = models.FileField(upload_to='attachments/', blank=True,null=True, validators=[FileExtensionValidator(['jpeg', 'jpg'])])
     facial_data = models.ImageField(upload_to=user_image_upload_path, blank=True, null=True, verbose_name='Facial Data')
+    my_comply = models.ImageField(upload_to='compliance_images/',blank=True, null=True)
     status = models.CharField(max_length=10, choices=[
         ('active', 'Active'),
         ('inactive', 'Inactive'),
@@ -185,7 +186,7 @@ class Turnstile_S(models.Model):
         super().save(*args, **kwargs)
 
 class Orientation(models.Model):
-    attachments = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['pdf', 'doc', 'docx', 'jpeg', 'jpg'])])
+    attachments = models.FileField(upload_to='attachments/', validators=[FileExtensionValidator(['pdf'])])
 
 class PreShift(models.Model):
     document = models.FileField(upload_to='preshift/') 

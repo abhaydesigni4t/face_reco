@@ -188,31 +188,42 @@
         .user {
             text-align: center;
             margin-top: 30px;
+          
         }
 
         #table-container {
             margin-top: 20px;
-            margin-left: 30px;
-            margin-right: 30px;
+            margin-left: 10px;
+            margin-right: 10px; /* Adjust margin-right as needed */
         }
 
         #customers {
             font-family: Arial, Helvetica, sans-serif;
             border-collapse: collapse;
-            width: 100%;
+            width: 100%; /* Adjust the width as needed */
+            max-width: 900px; /* Adjust the max-width as needed */
+            margin: 0 auto; /* Center the table horizontally */
+            overflow-x: auto;
         }
 
-       
         #customers th,
         #customers td {
             border: 1px solid #ddd;
-            padding: 4px; /* Decrease padding to reduce size */
+            padding: 2px; /* Decrease padding to reduce size */
             white-space: nowrap; /* Prevent text wrapping */
             overflow: hidden; /* Hide overflow text */
             text-overflow: ellipsis; /* Show ellipsis for overflow text */
             text-align: center;
+            font-size: 13.40px;
         }
 
+        #customers th {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+       
+        
         /* Optionally, you can set a max-width to further constrain the size */
         #customers th,
         #customers td {
@@ -242,7 +253,7 @@
         .add {
             background-color: #071390;
             color: white;
-            padding: 10px;
+            padding: 6px;
             border: solid;
             margin-top: 2px;
             display: inline-block;
@@ -347,6 +358,7 @@
 
         .filter-container {
             margin-bottom: 5px;
+            margin-left: 50px;
         }
 
         
@@ -412,7 +424,7 @@
         </nav>
     </header>
     <div class="user">
-        <h2 class="heading1">User Management</h2>
+        <h3 class="heading1">User Management</h3>
         <a class="add" href="{% url 'create' %}">Add User</a>
     </div>
 
@@ -486,9 +498,10 @@
                         Job Location
                     </div>
                 </th>
-            
+                <th>Email</th>
                 <th>Orientation</th>
                 <th>Facial Data</th>
+                <th>MyComply</th>
                 <th>
                     <div>
                         <span class="filter-icon" onclick="toggleFilter('status', '{{ sort_by }}')"><i class="fas fa-filter"></i></span>
@@ -508,6 +521,7 @@
                 <td>{{i.mycompany_id}}</td>
                 <td>{{i.tag_id}}</td>
                 <td>{{i.job_location}}</td>
+                <td>{{i.email}}</td>
                 {% load custom_filters %}
                 <td>
                     {% if i.orientation %}
@@ -540,6 +554,23 @@
                             {% else %}far fa-file
                             {% endif %}
                         "></i>
+                    </a>
+                    {% endwith %}
+                    {% else %}
+                    N/A
+                    {% endif %}
+                </td>
+                <td>
+                    {% if i.my_comply %}
+                    {% with file_extension=i.my_comply.name|lower %}
+                    <a href="{{ i.my_comply.url }}" target="_blank">
+                        <i class="file-icon {% if file_extension|slice:"-4" == '.pdf' %}far fa-file-pdf
+                                    {% elif file_extension|slice:"-4" == '.doc' or file_extension|slice:"-5" == '.docx' %}far fa-file-word
+                                    {% elif file_extension|slice:"-5" == '.jpeg' or file_extension|slice:"-4" == '.jpg' or file_extension|slice:"-4" == '.png' %}far fa-file-image
+                                    {% elif file_extension|slice:"-4" == '.xls' or file_extension|slice:"-5" == '.xlsx' %}far fa-file-excel
+                                    {% elif file_extension|slice:"-4" == '.ppt' or file_extension|slice:"-5" == '.pptx' %}far fa-file-powerpoint
+                                    {% else %}far fa-file
+                                {% endif %}"></i>
                     </a>
                     {% endwith %}
                     {% else %}

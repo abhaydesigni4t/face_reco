@@ -133,3 +133,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
             validated_data['status'] = 'active'
         return UserEnrolled.objects.create(**validated_data)
 
+
+class UserComplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEnrolled
+        fields = ['email', 'my_comply']
+

@@ -235,6 +235,20 @@ body {
      
     }
 
+    .attachment-container a {
+            display: inline-block; 
+            text-align: center;
+            margin-left: 565px;
+            background-color: #071390;
+            color: white;
+            padding: 6px;
+            border: solid;
+            margin-top: 2px;
+            border-radius: 10px 10px;
+            text-decoration: none; 
+        }
+
+
 </style>
 
 <body>
@@ -280,6 +294,14 @@ body {
         </nav>
     </header>
     <h2>Orientation Sheet</h2>
+
+   
+    <div class="attachment-container">
+        {% if latest_orientation %}
+            <a href="{% url 'view_attachment' attachment_id=latest_orientation.id %}" target="_blank">View Attachment</a>
+        {% endif %}
+    </div>
+
     <div class="form-container">
         <form method="post" action="{% url 'orientation' %}" enctype="multipart/form-data">
             {% csrf_token %}
@@ -287,6 +309,9 @@ body {
             <button type="submit" class="send-button">submit</button>
         </form>
     </div>
+
+  
+
 
     <footer>
         <p>Email: info@assuretech.com</p>
