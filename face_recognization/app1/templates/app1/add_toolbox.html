@@ -17,8 +17,9 @@ body {
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 600px;
+            height: 800px;
         }
+
 
         header {
         background-color: #071390; 
@@ -141,6 +142,37 @@ body {
         }
 
 
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #071390;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1000;
+            font-size: 14px;
+        }
+
+        footer h4,
+        footer p {
+            white-space: nowrap;
+            margin: 0;
+            padding: 2px;
+            display: inline;
+        }
+
+        .footer-bottom {
+            white-space: nowrap;
+            padding-top: 5px;
+        }
+
+        .footer-bottom p {
+            margin: 0;
+        }
+
+
     .form-container {
         background: white;
         padding: 20px;
@@ -197,33 +229,6 @@ body {
         }
     }
 
-    footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #071390;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        footer h4, footer p {
-            white-space: nowrap;
-            margin: 0;
-            padding: 2px;
-            display: inline;
-        }
-
-        .footer-bottom {
-            white-space: nowrap;
-            padding-top: 5px;
-        }
-
-        .footer-bottom p {
-            margin: 0;
-        }
-
         h2{
             text-align: center;
             margin-top: 35px;
@@ -251,11 +256,6 @@ body {
                     <a href="{% url 'sites' %}">Site D</a>
                 </div>
             </div>
-            <a href="{% url 'get_all' %}">User Management</a>
-            <a href="{% url 'report' %}">Analytics & Reports</a>
-            <a href="{% url 'notification1' %}">Notifications</a>
-            <a href="{% url 'company' %}">Company</a>
-            <a href="{%url 'orientation' %}"><i class=""></i>Documents</a>
             <div class="dropdown">
                 <a href="#" class="dropbtn">Language</a>
                 <div class="dropdown-content">
@@ -273,12 +273,13 @@ body {
             <div class="dropdown">
                 <a href="#" class="dropbtn"><i class="fas fa-cog"></i>Settings</a>
                 <div class="dropdown-content">
-                    <a href="{% url 'time' %}">Time Schedule</a>
-                    <a href="{% url 'setting_t' %}">Turnstile</a>
+                    <a href="#">ABC</a>
+                    <a href="#">ABC</a>
                 </div>
             </div>
         </nav>
     </header>
+
     <h2>Add ToolBox Talks</h2>
     <div class="form-container">
         <form method="post" action="{% url 'add_toolbox' %}" enctype="multipart/form-data">
