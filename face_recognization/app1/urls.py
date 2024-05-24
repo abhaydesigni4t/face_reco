@@ -94,6 +94,12 @@ urlpatterns = [
     path('post_orientation_sheet/', OrientationCreateView.as_view(), name='post_orientation_sheet'),
     path('attachment/<int:attachment_id>/', views.view_attachment, name='view_attachment'),
     path('mycomply_api/', UserComplyAPIView.as_view(), name='mycomply_api'),
+    path('filter_preshift/',views.PreShiftfilterdata ,name='filter_preshift'),
+    path('filter_toolbox/',views.toolboxfilterdata ,name='filter_toolbox'),
+    path('translate/',views.translate ,name='translate'),
+
+
+
 ] 
 
 

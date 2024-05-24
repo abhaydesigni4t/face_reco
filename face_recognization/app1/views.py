@@ -881,29 +881,42 @@ from .serializers import UserComplySerializer
 
 class UserComplyAPIView(APIView):
     def post(self, request, format=None):
-        # Extract email and my_comply from request data
         email = request.data.get('email')
         my_comply_file = request.FILES.get('my_comply')
-        
         if email is not None and my_comply_file is not None:
             try:
-                # Retrieve the user object based on the provided email
                 user = UserEnrolled.objects.get(email=email)
             except UserEnrolled.DoesNotExist:
-                # If the user does not exist, return a 404 response
                 return Response({'error': 'User not found for the provided email.'}, status=status.HTTP_404_NOT_FOUND)
-            
-            # Create a serializer instance with the extracted data
             serializer = UserComplySerializer(instance=user, data={'my_comply': my_comply_file}, partial=True)
             if serializer.is_valid():
-                # Save the updated my_comply file to the user object
                 serializer.save()
-                
-                # Return a success response
                 return Response({'message': 'my_comply file uploaded successfully.'})
             else:
-                # If the serializer data is not valid, return a 400 response with the validation errors
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            # If email or my_comply_file is missing, return a 400 response
             return Response({'error': 'Email and my_comply file are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def PreShiftfilterdata(request):
+    selected_date = request.GET.get('selected_date')
+    documents = PreShift.objects.all()
+
+    if selected_date:
+        documents = documents.filter(date=selected_date)
+
+    return render(request, 'app1/preshift.html', {'documents': documents})
+
+def toolboxfilterdata(request):
+    selected_date = request.GET.get('selected_date')
+    documents = ToolBox.objects.all()
+
+    if selected_date:
+        documents = documents.filter(date=selected_date)
+
+    return render(request, 'app1/toolbox.html', {'documents': documents})
+
+
+def translate(request):
+    return render(request,'app1/trans.html')
+

@@ -18,7 +18,7 @@
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 700px;
+            height: 800px;
         }
 
         header {
@@ -339,7 +339,20 @@
             color : black
 
         }
+
+    
     </style>
+
+
+<script type="text/javascript">
+    // Remove the Google Translate API navbar
+    document.addEventListener('DOMContentLoaded', function() {
+        var googleTranslateElement = document.querySelector('.skiptranslate');
+        if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+        }
+    });
+</script>
 </head>
 
 <body>
@@ -378,8 +391,18 @@
         </nav>
     </header>
     <h2>ToolBox Talks</h2>
+
+    <div id="google_translate_element"></div>
+
     <div class="main-container">
     <div class="main-content">
+
+        <form method="GET" action="{% url 'filter_toolbox' %}">
+            <label for="selected_date">Filter by Date:</label>
+            <input type="date" id="selected_date" name="selected_date">
+            <button type="submit">Filter</button>
+        </form>
+
         <a href="{% url 'add_toolbox' %}" class="add-new-button">Add New</a>
 
         <table>
@@ -443,7 +466,18 @@
         </div>
     </footer>
 
-
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en', includedLanguages: 'en,es'},
+                'google_translate_element'
+            );
+        }
+    </script>
+    
+    <script type="text/javascript"
+            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
 </body>
 
 

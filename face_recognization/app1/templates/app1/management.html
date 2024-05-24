@@ -165,12 +165,13 @@
         .nav #lang-selector select {
             display: none;
         }
-
         .content {
-        flex-grow: 1;
-        padding: 20px;
-        margin-top:60px;
-        margin-left: 60px;
+            flex-grow: 1;
+            padding: 20px;
+            margin-top: 60px;
+            margin-left: 40px;
+            display: flex;
+            justify-content: space-between;
         }
 
         .site-list {
@@ -183,15 +184,17 @@
             margin-bottom: 20px;
             background-color: #071390;
             cursor: pointer;
-            width: 30%;
+            width: 110%;
             color: white;
             font-weight: bold;
         }
 
-        .site-list li a{
+        .site-list li a {
             background-color: #071390;
             color: white;
         }
+
+
 
         #notification-icon {
             font-size: 24px;
@@ -227,8 +230,33 @@
             margin: 0;
         }
 
-        
+        .table-container {
+            width: 50%;
+            /* Adjust width */
+            margin-top: -40px;
+            float: right; /* Align to the right */
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #071390;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #071390;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 
@@ -265,14 +293,49 @@
             </div>
         </div>
     </div>
-
+        
     <div class="content">
-        <ul class="site-list"> 
-            <li ><a href="{% url 'get_all' %}">USER MANAGEMENT</a></li>
-            <li ><a href="{% url 'asset_manage' %}">ASSET MANAGEMENT</a></li>
-            <li ><a href="{% url 'site_docu' %}">SITE DOCUMENTS</a></li> 
+        <ul class="site-list">
+            <li><a href="{% url 'get_all' %}">USER MANAGEMENT</a></li>
+            <li><a href="{% url 'asset_manage' %}">ASSET MANAGEMENT</a></li>
+            <li><a href="{% url 'site_docu' %}">SITE DOCUMENTS</a></li>
         </ul>
-   </div>
+
+        
+        <div class="table-container">
+            <h3>On Site Users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aman</td>
+                        <td>2024-05-21 10:30:00</td>
+                    </tr>
+                    <tr>
+                        <td>Rohit</td>
+                        <td>2024-05-20 15:45:00</td>
+                    </tr>
+                    <tr>
+                        <td>Kamesh</td>
+                        <td>2024-05-22 08:20:00</td>
+                    </tr>
+                    <tr>
+                        <td>Sanket</td>
+                        <td>2024-05-23 15:45:00</td>
+                    </tr>
+                    <tr>
+                        <td>Atharv</td>
+                        <td>2024-05-19 15:45:00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
    <footer>
     <p>Email: info@assuretech.com</p>
     <p>Phone: +1 (123) 456-7890</p>
