@@ -96,7 +96,7 @@ urlpatterns = [
     path('mycomply_api/', UserComplyAPIView.as_view(), name='mycomply_api'),
     path('filter_preshift/',views.PreShiftfilterdata ,name='filter_preshift'),
     path('filter_toolbox/',views.toolboxfilterdata ,name='filter_toolbox'),
-    path('translate/',views.translate ,name='translate'),
+  
 
 
 

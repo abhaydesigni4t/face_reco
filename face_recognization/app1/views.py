@@ -105,7 +105,7 @@ def report_view(request):
 
         labels = ['Active', 'Inactive']
         sizes = [active_users, inactive_users]
-        colors = ['lightgreen', 'lightcoral']
+        colors = ['#4CAF50', '#F44336'] 
 
         plt.figure(figsize=(6, 6))
         plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=140)
@@ -570,19 +570,23 @@ def delete_selected4(request):
         return redirect('setting_t')  
     return redirect('setting_t')
 
+import json
+
 def update_safety_confirmation(request):
     if request.method == 'POST' and request.is_ajax():
-        pk = request.POST.get('pk')
-        is_on = request.POST.get('safety_confirmation')
+        data = json.loads(request.body)
+        pk = data.get('pk')
+        is_on = data.get('safety_confirmation')
 
-        turnstile = Turnstile_S.objects.get(pk=pk)
-        turnstile.safety_confirmation = is_on
-        turnstile.save()
-
-        return JsonResponse({'success': True})
+        try:
+            turnstile = Turnstile_S.objects.get(pk=pk)
+            turnstile.safety_confirmation = is_on
+            turnstile.save()
+            return JsonResponse({'success': True})
+        except Turnstile_S.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Turnstile not found'})
     else:
-        return JsonResponse({'success': False, 'error': 'Invalid request method or not an AJAX request'})
-
+        return JsonResponse({'success': False, 'error': 'Invalid request'})
 def sort_data(request):
    
     sort_by = request.GET.get('sort_by')
@@ -917,6 +921,4 @@ def toolboxfilterdata(request):
     return render(request, 'app1/toolbox.html', {'documents': documents})
 
 
-def translate(request):
-    return render(request,'app1/trans.html')
 
