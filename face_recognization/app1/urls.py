@@ -96,6 +96,8 @@ urlpatterns = [
     path('mycomply_api/', UserComplyAPIView.as_view(), name='mycomply_api'),
     path('filter_preshift/',views.PreShiftfilterdata ,name='filter_preshift'),
     path('filter_toolbox/',views.toolboxfilterdata ,name='filter_toolbox'),
+    path('delete_facial_data_image/<int:user_id>/<str:filename>/', views.delete_facial_data_image, name='delete_facial_data_image'),
+    path('upload_facial_data_image/<int:user_id>/', views.upload_facial_data_image, name='upload_facial_data_image'),
   
 
 

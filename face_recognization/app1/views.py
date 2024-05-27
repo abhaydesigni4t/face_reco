@@ -844,17 +844,20 @@ class UserProfileCreateAPIView(APIView):
 
 
 def show_facial_data_images(request, user_id):
-    user = UserEnrolled.objects.get(pk=user_id)
+    user = get_object_or_404(UserEnrolled, pk=user_id)
     user_folder = os.path.join('media', 'facial_data', user.name)
     facial_data_images = []
 
     if os.path.exists(user_folder):
         for filename in os.listdir(user_folder):
             if filename.endswith(('.jpeg', '.jpg', '.png')):
-                facial_data_images.append(os.path.join('/', user_folder, filename))
+                facial_data_images.append({
+                    'url': os.path.join('/', user_folder, filename),
+                    'filename': filename,
+                    'user_id': user_id,
+                })
 
-    return render(request, 'app1/facial_data_images.html', {'facial_data_images': facial_data_images})
-
+    return render(request, 'app1/facial_data_images.html', {'facial_data_images': facial_data_images, 'user_id': user_id})
 
 class OrientationCreateView(APIView):
     def post(self, request, *args, **kwargs):
@@ -921,4 +924,45 @@ def toolboxfilterdata(request):
     return render(request, 'app1/toolbox.html', {'documents': documents})
 
 
+import os
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import UserEnrolled
 
+def delete_facial_data_image(request, user_id, filename):
+    user = get_object_or_404(UserEnrolled, pk=user_id)
+    user_folder = os.path.join('media', 'facial_data', user.name)
+    file_path = os.path.join(user_folder, filename)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        messages.success(request, 'Image deleted successfully.')
+    else:
+        messages.error(request, 'Image not found.')
+
+    return redirect('show_facial_data_images', user_id=user_id)
+
+from .forms import SingleFileUploadForm
+
+def upload_facial_data_image(request, user_id):
+    user = get_object_or_404(UserEnrolled, pk=user_id)
+    user_folder = os.path.join('media', 'facial_data', user.name)
+    os.makedirs(user_folder, exist_ok=True)
+
+    if request.method == 'POST':
+        form = SingleFileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = request.FILES['facial_data']
+            file_path = os.path.join(user_folder, image.name)
+            with open(file_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+            messages.success(request, 'Image uploaded successfully.')
+            return redirect('show_facial_data_images', user_id=user_id)
+    else:
+        form = SingleFileUploadForm()
+
+    return render(request, 'app1/upload_facial_data_image.html', {
+        'form': form,
+        'user_id': user_id
+    })

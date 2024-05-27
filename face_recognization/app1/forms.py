@@ -93,6 +93,13 @@ class ToolboxForm(forms.ModelForm):
         fields = ['document']
 
 
+from django import forms
+from .models import UserEnrolled
+
+
+class SingleFileUploadForm(forms.Form):
+    facial_data = forms.ImageField(required=True)
+
     
 
 
