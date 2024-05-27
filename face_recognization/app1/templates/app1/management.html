@@ -60,26 +60,6 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -99,7 +79,6 @@
             max-width: calc(100vw - 40px); 
             overflow: auto; 
         }
-
 
         .dropdown-content a {
             color: black;
@@ -140,8 +119,6 @@
             display: block;
         }
 
-
-        
         footer {
             position: fixed;
             bottom: 0;
@@ -200,7 +177,6 @@
         }
 
 
-
         #notification-icon {
             font-size: 24px;
             color: white;
@@ -211,9 +187,8 @@
        
         .table-container {
             width: 50%;
-            /* Adjust width */
             margin-top: -40px;
-            float: right; /* Align to the right */
+            float: right; 
         }
 
         table {
@@ -236,6 +211,67 @@
         tbody tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 0;
+            }
+
+            .nav a {
+                padding: 10px 10px;
+                font-size: 14px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .nav a {
+                padding: 8px 5px;
+                font-size: 12px;
+            }
+
+        }
+
+        
+
+        @media (max-width: 768px) {
+            .site-list {
+                max-width: 50%;
+                margin-right: -25px;
+                margin-bottom: 20px;
+            }
+
+            .table-container {
+                width: 100%;
+                margin-top: 20px;
+                overflow-x: auto;
+            }
+
+            .site-list li {
+                padding: 6px;
+                margin-bottom: 15px;
+            }
+
+            th,
+            td {
+                padding: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-list li {
+                padding: 4px;
+                margin-left: -20px;
+            }
+            
+            .table-container {
+                margin-top: -40px;
+                margin-left: 30px;
+            }
+        }
+
+
     </style>
 </head>
 
@@ -260,14 +296,14 @@
                 </div>
             </div>
             <div class="dropdown">
-                <a href="#" class="dropbtn"><i class="fas fa-user"></i>Profile</a>
+                <a href="#" class="dropbtn">Profile</a>
                 <div class="dropdown-content">
-                    <a href="#"><i class="fas fa-user"></i>Profile</a>
-                    <a href="{% url 'login' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    <a href="#">Profile</a>
+                    <a href="{% url 'login' %}">Logout</a>
                 </div>
             </div>
             <div class="dropdown">
-                <a href="#" class="dropbtn"><i class="fas fa-cog"></i>Settings</a>
+                <a href="#" class="dropbtn">Settings</a>
                 <div class="dropdown-content">
                     <a href="#">ABC</a>
                     <a href="#">ABC</a>
