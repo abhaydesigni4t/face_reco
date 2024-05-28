@@ -15,7 +15,7 @@
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 1400px;
+            height: 1250px;
         }
 
 
@@ -59,25 +59,7 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
+       
 
         .dropdown {
             display: inline-block;
@@ -219,13 +201,64 @@
 
         }
 
-        @media screen and (max-width: 768px) {
-            form {
-                width: 90%;
-            }
+    .hidden-desktop {
+        display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .hidden-desktop {
+            display: block;
         }
-          
-        
+    }
+
+        @media only screen and (max-width: 768px) {
+    .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #071390;
+        width: 40%;
+        top: 70px;
+        left: 0;
+        padding: 10px;
+    }
+
+    .nav.open {
+        display: flex;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-label span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px;
+    }
+
+    .container {
+        width: 90%;
+        margin: auto;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .footer {
+        padding: 10px;
+    }
+
+    .container h2{
+        font-size: medium;
+    }
+}
+
 
 
     </style>
@@ -271,6 +304,9 @@
             </div>
         </nav>
     </header>
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
 
     <div class="container">
         <h2>User Enrollment Form</h2>
@@ -310,5 +346,12 @@
             <p>&copy; 2024 Assure Tech. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleNav() {
+            var nav = document.querySelector('.nav');
+            nav.classList.toggle('open');
+        }
+    </script>
 </body>
 </html>

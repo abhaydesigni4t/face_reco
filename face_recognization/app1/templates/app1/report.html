@@ -61,26 +61,6 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -198,6 +178,114 @@
         font-weight: bold; 
      
     }
+
+
+        .hidden-desktop {
+        display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+    .hidden-desktop {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #071390;
+        width: 60%; /* Adjusted width for better visibility on mobile */
+        top: 70px;
+        left: 0;
+        padding: 10px;
+    }
+
+    .nav.open {
+        display: flex;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-label span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .logo img {
+        max-height: 25px;
+        margin: 0 0 10px 0;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        min-width: 100%;
+    }
+
+    .dropdown-content a {
+        text-align: left;
+    }
+
+    .container {
+        text-align: center;
+        margin-top: 10px; /* Further reduced margin for better spacing on mobile */
+        padding: 0 5px; /* Further reduced padding to avoid content touching the edges */
+        width: 100%; /* Ensure container takes full width on mobile */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    .chart-container {
+        max-width: 100%; /* Ensure chart container is responsive */
+        margin: 0 auto;
+        overflow-x: auto; /* Allow horizontal scrolling if needed */
+    }
+
+    .chart-container img {
+        width: 90%; /* Reduce the size of the pie chart */
+        height: auto; /* Maintain aspect ratio */
+        max-width: 400px; /* Optional: Set a max width for larger screens */
+    }
+
+    h1 {
+        font-size: 16px; /* Further adjusted font size for mobile */
+    }
+
+    footer {
+        position: fixed; 
+        bottom: 0;
+        width: 100%;
+        background-color: #071390;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .footer-bottom {
+        white-space: nowrap;
+        padding-top: 5px;
+    }
+
+    .footer-bottom p {
+        margin: 0;
+    }
+}
+
+
     </style>
 </head>
 
@@ -243,6 +331,10 @@
         </nav>
     </header>
   
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+    
     <div class="container">
         <h1>Analytics & Reports</h1>
         <div class="chart-container">
@@ -271,6 +363,13 @@ if (activeLink) {
     activeLink.classList.add('activeLink');
 }
     </script>
+
+<script>
+    function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
+    }
+</script>
 </body>
 
 </html>

@@ -59,26 +59,7 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
+       
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -244,6 +225,85 @@
      
     }
 
+
+    .hidden-desktop {
+        display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+    .hidden-desktop {
+        display: block;
+    }
+
+    .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #071390;
+        width: 40%;
+        top: 70px;
+        left: 0;
+        padding: 10px;
+    }
+
+    .nav.open {
+        display: flex;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-label span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #table-container table {
+        width: 95%;
+    }
+
+    #table-container th,
+    #table-container td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #table-container th {
+        background-color: #071390;
+    }
+
+    #table-container tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #table-container tr:hover {
+        background-color: #ddd;
+    }
+
+    #table-container th:nth-child(1),
+    #table-container td:nth-child(1) {
+        display: none;
+    }
+
+    #table-container td:last-child {
+        white-space: nowrap;
+    }
+}
+
     </style>
 </head>
 
@@ -288,6 +348,11 @@
             </div>
         </nav>
     </header>
+
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <div class="user">
         <a class="add" href="{% url 'add_company' %}">Add New</a>
     </div>
@@ -348,6 +413,14 @@
             activeLink.classList.add('activeLink');
         }
     </script>
+
+<script>
+    function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
+    }
+</script>
+
 </body>
 
 </html>

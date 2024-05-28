@@ -61,25 +61,6 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
 
         .dropdown {
             display: inline-block;
@@ -212,6 +193,11 @@
             background-color: #45a049;
         }
 
+        .activeLink {
+        color: #ff0000;
+        font-weight: bold; 
+        }
+
         @media (max-width: 768px) {
             .form-container {
                 margin: 20px;
@@ -228,8 +214,67 @@
             }
         }
         
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 0;
+            }
+
+            .nav a {
+                padding: 10px 10px;
+                font-size: 14px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .nav a {
+                padding: 8px 5px;
+                font-size: 12px;
+            }
+
+        }
        
       
+        .hidden-desktop {
+        display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .hidden-desktop {
+            display: block;
+        }
+    }
+
+        @media only screen and (max-width: 768px) {
+    .nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        background-color: #071390;
+        width: 40%;
+        top: 70px;
+        left: 0;
+        padding: 10px;
+    }
+
+    .nav.open {
+        display: flex;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-label span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px;
+    }
+        }
     </style>
 </head>
 
@@ -275,6 +320,9 @@
         </nav>
     </header>
 
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
 
     <div class="form-container">
         <form method="post" action="{% url 'notification' %}">
@@ -292,7 +340,10 @@
     </footer>
 
     <script>
-
+        function toggleNav() {
+            var nav = document.querySelector('.nav');
+            nav.classList.toggle('open');
+        }
     </script>
     
 </body>

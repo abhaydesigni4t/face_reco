@@ -103,26 +103,7 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
+       
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -182,8 +163,6 @@
         .nav .dropdown:hover .dropdown-content {
             display: block;
         }
-
-
 
         .user {
             text-align: center;
@@ -346,11 +325,7 @@
             margin: 5px;
         }
 
-        @media only screen and (max-width: 600px) {
-            .pagination a {
-                padding: 8px 10px;
-            }
-        }
+      
 
         #filterStatus option[selected] {
             background-color: #ddd;
@@ -379,6 +354,68 @@
         text-decoration: underline; 
      
     }
+
+
+    @media (max-width: 768px) {
+            header {
+                padding: 10px 0;
+            }
+
+            .nav a {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .filter-container {
+                margin-left: 10px;
+            }
+
+            .logo img {
+                margin-left: 10px;
+            }
+
+            .user {
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav a {
+                padding: 8px 5px;
+                font-size: 10px;
+            }
+
+            .filter-container {
+                margin-left: 5px;
+            }
+
+            .logo img {
+                margin-left: 5px;
+                max-height: 30px;
+            }
+
+            .user {
+                margin-top: 15px;
+            }
+
+            .add {
+                padding: 4px;
+                margin-top: 1px;
+                font-size: 12px;
+            }
+
+            .edit-btn,
+            .delete-btn,
+            .inactive-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+
+            .pagination a {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 
