@@ -38,7 +38,7 @@
         })
         .then(response => {
             if (response.ok) {
-                window.location.reload(); // Refresh the page after successful operation
+                window.location.reload(); 
             } else {
                 alert('Error: ' + response.statusText);
             }
@@ -49,7 +49,9 @@
     }
 }
 
-         </script>
+    </script>
+
+   
 
     <style>
         
@@ -60,7 +62,7 @@
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 1000px;
+            height: 900px;
         }
 
         header {
@@ -201,12 +203,9 @@
             padding-bottom: 8px;
         }
 
-       
-        
-        /* Optionally, you can set a max-width to further constrain the size */
         #customers th,
         #customers td {
-            max-width: 150px; /* Adjust as needed */
+            max-width: 150px; 
         }
 
         #customers tr:nth-child(even) {
@@ -357,65 +356,198 @@
 
 
     @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
+    .filter-container {
+        margin-left: 10px;
+    }
+
+    .user {
+        margin-top: 20px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-label span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .logo img {
+        max-height: 25px;
+        margin: 0 0 10px 0;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        min-width: 100%;
+    }
+
+    .dropdown-content a {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-container {
+        margin-left: 5px;
+    }
+
+    .logo img {
+        max-height: 20px;
+        margin-left: 5px;
+    }
+
+    .user {
+        margin-top: 15px;
+    }
+
+    .add {
+        padding: 4px;
+        margin-top: 1px;
+        font-size: 12px;
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .inactive-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .pagination a {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    footer {
+        text-align: center;
+    }
+
+    .footer-bottom {
+        padding: 5px;
+    }
+}
+
+@media (max-width: 320px) {
+    .logo img {
+        max-height: 15px;
+    }
+
+    .add {
+        font-size: 10px;
+    }
+
+    .edit-btn,
+    .delete-btn,
+    .inactive-btn {
+        font-size: 8px;
+    }
+
+    .pagination a {
+        font-size: 10px;
+    }
+}
+
+.hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
             }
 
-            .nav a {
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
                 padding: 10px;
-                font-size: 12px;
             }
 
-            .filter-container {
-                margin-left: 10px;
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
             }
 
             .logo img {
-                margin-left: 10px;
+                max-height: 25px;
+                margin: 0 0 10px 0;
             }
 
-            .user {
-                margin-top: 20px;
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
             }
         }
 
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 10px;
-            }
+@media only screen and (max-width: 768px) {
+    #table-container {
+        margin-top: 2px;
+        margin-left: 5px;
+        margin-right: 5px; 
+        width: calc(100% - 10px);
+        overflow-x: auto; 
+    }
+}
 
-            .filter-container {
-                margin-left: 5px;
-            }
-
-            .logo img {
-                margin-left: 5px;
-                max-height: 30px;
-            }
-
-            .user {
-                margin-top: 15px;
-            }
-
-            .add {
-                padding: 4px;
-                margin-top: 1px;
-                font-size: 12px;
-            }
-
-            .edit-btn,
-            .delete-btn,
-            .inactive-btn {
-                padding: 4px 8px;
-                font-size: 10px;
-            }
-
-            .pagination a {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
+@media only screen and (max-width: 600px) {
+        .filter-container label,
+        .filter-container input,
+        .filter-container select {
+            display: block;
+            margin-right: 0;
+            margin-bottom: 1px;
+            width: 50%;
         }
+    }
+
+
     </style>
 </head>
 
@@ -460,6 +592,11 @@
             </div>
         </nav>
     </header>
+
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <div class="user">
         <h3 class="heading1">User Management</h3>
         <a class="add" href="{% url 'create' %}">Add User</a>
@@ -718,7 +855,15 @@ const activeLink = document.querySelector(`.nav a[href="${pathName}"]`);
 if (activeLink) {
     activeLink.classList.add('activeLink');
 }
-    </script>
+
+</script>
+
+<script>
+    function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
+        }
+</script>
      
 </body>
 
