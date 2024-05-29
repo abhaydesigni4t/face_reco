@@ -61,26 +61,7 @@
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
+       
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -207,7 +188,84 @@
             cursor: pointer;
         }
 
+        .hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
+                padding: 10px;
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .logo img {
+                max-height: 25px;
+                margin: 0 0 10px 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
+            }
+        }
         
+        @media (max-width: 768px) {
+
+    
+            .site-list {
+                max-width: 100%;
+                margin-right: -5px;
+                margin-bottom: 20px;
+                margin-left: -15px;
+            }
+
+            .site-list li {
+                padding: 8px;
+                
+            }
+
+        }
+
 
     </style>
 </head>
@@ -249,6 +307,10 @@
         </nav>
     </header>
 
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <div class="content">
         <ul class="site-list"> 
             <li ><a href="{% url 'preshift' %}">PreShift</a></li>
@@ -262,6 +324,13 @@
         <p>&copy; 2024 Assure Tech. All rights reserved.</p>
     </div>
 </footer>
+
+<script>
+    function toggleNav() {
+    var nav = document.querySelector('.nav');
+    nav.classList.toggle('open');
+    }
+</script>
 </body>
 
 </html>

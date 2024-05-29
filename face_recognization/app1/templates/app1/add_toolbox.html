@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     {% load static %}
     <title>orientation</title>
 </head>
@@ -240,6 +241,68 @@ body {
      
     }
 
+    .hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
+                padding: 10px;
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .logo img {
+                max-height: 25px;
+                margin: 0 0 10px 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
+            }
+        }
+
+
 </style>
 
 <body>
@@ -280,6 +343,10 @@ body {
         </nav>
     </header>
 
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <h2>Add ToolBox Talks</h2>
     <div class="form-container">
         <form method="post" action="{% url 'add_toolbox' %}" enctype="multipart/form-data">
@@ -303,6 +370,13 @@ body {
         const activeLink = document.querySelector(`.nav a[href="${pathName}"]`);
         if (activeLink) {
             activeLink.classList.add('activeLink');
+        }
+    </script>
+
+    <script>
+        function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
         }
     </script>
 </body>

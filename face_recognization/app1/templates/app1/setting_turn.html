@@ -303,6 +303,83 @@
         font-weight: bold; 
      
     }
+
+    .hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
+                padding: 10px;
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .logo img {
+                max-height: 25px;
+                margin: 0 0 10px 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
+            }
+
+           
+            .delete-btn {
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
+
+    @media only screen and (max-width: 768px) {
+    #table-container {
+        margin-top: 2px;
+        margin-left: 5px;
+        margin-right: 5px; 
+        width: calc(100% - 10px);
+        overflow-x: auto; 
+    }
+}
     </style>
 </head>
 
@@ -347,6 +424,11 @@
             </div>
         </nav>
     </header>
+
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <div class="user">
         <a class="add" href="{% url 'add_turnstile' %}">Add</a>
     </div>
@@ -444,6 +526,13 @@
         }
  
 
+    </script>
+
+    <script>
+        function toggleNav() {
+    var nav = document.querySelector('.nav');
+    nav.classList.toggle('open');
+    }
     </script>
 </body>
 

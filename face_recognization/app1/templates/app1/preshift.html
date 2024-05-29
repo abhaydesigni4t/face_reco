@@ -18,7 +18,7 @@
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 800px;
+            height: 900px;
         }
 
 
@@ -307,6 +307,86 @@
 
         }
 
+        .hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
+                padding: 10px;
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .logo img {
+                max-height: 25px;
+                margin: 0 0 10px 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
+            }
+
+            .edit-btn,
+            .delete-btn {
+                display: block;
+                margin-bottom: 6px;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            .main-container {
+                margin-top: -5px;
+                margin-left: -20px;
+                margin-right: 5px; 
+                width: calc(100% - 15px);
+                overflow-x: auto; 
+            }
+
+            .main-content{
+                size: 150px;
+            }
+        }
  
     </style>
 
@@ -350,9 +430,13 @@
             </div>
         </nav>
     </header>
-
-    <h2>PreShift</h2>
     <div id="google_translate_element"></div>
+ 
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <h2>PreShift</h2>
 
     <div class="main-container">
         <div class="main-content">
@@ -435,7 +519,15 @@
     </script>
     
     <script type="text/javascript"
-            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+            src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+
+    <script>
+        function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
+        }
+    </script>
     
 </body>
 
