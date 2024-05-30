@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <title>Facial Data Images</title>
     {% load static %}
 
@@ -17,7 +19,7 @@ body {
             padding-top: 10vh;
             background: #f4f4f4;
             box-sizing: border-box;
-            height: 800px;
+            height: 1000px;
         }
 
         header {
@@ -60,26 +62,7 @@ body {
 
         }
         
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 0;
-            }
-
-            .nav a {
-                padding: 10px 10px;
-                font-size: 14px;
-            }
-
-        }
-
-        @media (max-width: 480px) {
-            .nav a {
-                padding: 8px 5px;
-                font-size: 12px;
-            }
-
-        }
-
+       
         .dropdown {
             display: inline-block;
             position: relative; 
@@ -241,6 +224,104 @@ body {
             border-radius: 10px 10px;
         }
 
+        .hidden-desktop {
+        display: none;
+    }
+
+
+    @media only screen and (max-width: 768px) {
+            .hidden-desktop {
+                display: block;
+            }
+
+            .nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                background-color: #071390;
+                width: 60%;
+                top: 70px;
+                left: 0;
+                padding: 10px;
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav-toggle-label {
+                display: block;
+                padding: 10px;
+                cursor: pointer;
+            }
+
+            .nav-toggle-label span {
+                display: block;
+                width: 25px;
+                height: 3px;
+                background-color: white;
+                margin: 5px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .logo img {
+                max-height: 25px;
+                margin: 0 0 10px 0;
+            }
+
+            .dropdown-content {
+                left: 0;
+                transform: none;
+                min-width: 100%;
+            }
+
+            .dropdown-content a {
+                text-align: left;
+            }
+    
+        }
+
+        @media only screen and (max-width: 768px) {
+        .image-container .image-wrapper {
+            width: calc(50% - 10px);
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        .image-container .image-wrapper {
+            width: calc(85% - 10px);
+            margin-left: 100px;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+    .image-container .image-wrapper .button-container {
+        left: 0;
+        right: 0;
+        margin: 20px auto;
+        text-align: center;
+        width: 100%;
+       
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .image-container .image-wrapper .button-container {
+        left: 0;
+        right: 0;
+        margin: 20px auto;
+        text-align: center;
+        width: 100%;
+        
+    }
+}
+
+
 </style>
 </head>
 <body>
@@ -285,6 +366,10 @@ body {
         </nav>
     </header>
 
+    <a class="nav-toggle-label hidden-desktop" onclick="toggleNav()">
+        <i class="fas fa-bars"></i>
+    </a>
+
     <div class="user">
         <a href="{% url 'upload_facial_data_image' user_id=user_id %}" class="add">Add New</a>
     </div>
@@ -308,6 +393,13 @@ body {
             <p>&copy; 2024 Assure Tech. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleNav() {
+        var nav = document.querySelector('.nav');
+        nav.classList.toggle('open');
+        }
+    </script>
     </body>
     
     

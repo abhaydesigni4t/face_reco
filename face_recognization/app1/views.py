@@ -845,7 +845,7 @@ class UserProfileCreateAPIView(APIView):
 
 def show_facial_data_images(request, user_id):
     user = get_object_or_404(UserEnrolled, pk=user_id)
-    user_folder = os.path.join('media', 'facial_data', user.name)
+    user_folder = os.path.join('media', 'facial_data', user.get_folder_name())
     facial_data_images = []
 
     if os.path.exists(user_folder):
@@ -931,7 +931,7 @@ from .models import UserEnrolled
 
 def delete_facial_data_image(request, user_id, filename):
     user = get_object_or_404(UserEnrolled, pk=user_id)
-    user_folder = os.path.join('media', 'facial_data', user.name)
+    user_folder = os.path.join('media', 'facial_data', user.get_folder_name())
     file_path = os.path.join(user_folder, filename)
 
     if os.path.exists(file_path):
@@ -946,7 +946,7 @@ from .forms import SingleFileUploadForm
 
 def upload_facial_data_image(request, user_id):
     user = get_object_or_404(UserEnrolled, pk=user_id)
-    user_folder = os.path.join('media', 'facial_data', user.name)
+    user_folder = os.path.join('media', 'facial_data', user.get_folder_name())
     os.makedirs(user_folder, exist_ok=True)
 
     if request.method == 'POST':

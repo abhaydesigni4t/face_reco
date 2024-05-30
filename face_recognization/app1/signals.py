@@ -17,5 +17,5 @@ def book_delete_handler(sender, instance, **kwargs):
 @receiver(post_save, sender=UserEnrolled)
 def create_user_folder(sender, instance, created, **kwargs):
     if created:
-        user_folder = os.path.join('media', 'facial_data', instance.name)
+        user_folder = os.path.join('media', 'facial_data', instance.get_folder_name())
         os.makedirs(user_folder, exist_ok=True)

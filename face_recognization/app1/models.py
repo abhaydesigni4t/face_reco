@@ -52,7 +52,7 @@ import os
 
 def user_image_upload_path(instance, filename):
     base_filename, file_extension = os.path.splitext(filename)
-    return f'facial_data/{instance.name}/{base_filename}{file_extension}'
+    return f'facial_data/{instance.get_folder_name()}/{base_filename}{file_extension}'
 
 class UserEnrolled(models.Model):
     sr = models.AutoField(primary_key=True,unique=True)
@@ -78,6 +78,9 @@ class UserEnrolled(models.Model):
     
     def __str__(self):
         return self.name
+
+    def get_folder_name(self):
+        return f"{self.name}_{self.tag_id}"
     
     def save(self, *args, **kwargs):
         if not self.pk: 
@@ -196,4 +199,14 @@ class ToolBox(models.Model):
     document = models.FileField(upload_to='toolbox/') 
     date = models.DateField(auto_now_add=True) 
 
+class OnSiteUser(models.Model):
+    name = models.CharField(max_length=100)
+    tag_id = models.CharField(max_length=50)
+    status = models.CharField(max_length=100, choices=[
+        ('entry', 'Entry'),
+        ('exit', 'Exit'),
+    ])
+    timestamp = models.DateTimeField(auto_now=True) 
 
+    def __str__(self):
+        return self.name
