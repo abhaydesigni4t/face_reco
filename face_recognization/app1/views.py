@@ -966,3 +966,38 @@ def upload_facial_data_image(request, user_id):
         'form': form,
         'user_id': user_id
     })
+
+from .models import OnSiteUser
+
+def onsite_user(request):
+    user = OnSiteUser.objects.all()
+    return render(request, 'app1/onsite_user.html', {'user': user})
+
+
+def delete_selected5(request):
+    if request.method == 'POST':
+        selected_records = request.POST.getlist('selected_recordings')
+        if 'select_all' in request.POST:
+            selected_records = [str(record.pk) for record in OnSiteUser.objects.all()]
+        OnSiteUser.objects.filter(pk__in=selected_records).delete()
+        return redirect('onsite_user')  
+    return redirect('onsite_user')
+
+
+from rest_framework import generics
+from .models import OnSiteUser
+from .serializers import OnSiteUserSerializer
+
+class OnSiteUserCreateView(generics.CreateAPIView):
+    queryset = OnSiteUser.objects.all()
+    serializer_class = OnSiteUserSerializer
+
+
+from rest_framework import generics
+from .models import OnSiteUser
+from .serializers import OnsiteGetSerializer
+
+class OnSiteUserListView(generics.ListAPIView):
+    queryset = OnSiteUser.objects.all()
+    serializer_class = OnsiteGetSerializer
+

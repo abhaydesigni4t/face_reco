@@ -203,8 +203,8 @@ class OnSiteUser(models.Model):
     name = models.CharField(max_length=100)
     tag_id = models.CharField(max_length=50)
     status = models.CharField(max_length=100, choices=[
-        ('entry', 'Entry'),
-        ('exit', 'Exit'),
+        ('Entry', 'Entry'),
+        ('Exit', 'Exit'),
     ])
     timestamp = models.DateTimeField(auto_now=True) 
 
