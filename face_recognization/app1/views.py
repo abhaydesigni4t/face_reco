@@ -636,7 +636,7 @@ def make_inactive_selected(request):
         UserEnrolled.objects.filter(pk__in=selected_record_ids).update(status='inactive')
     return redirect('get_all')
 
-class FacialDataApi_extra(APIView):
+''' class FacialDataApi_extra(APIView):
     parser_classes = (MultiPartParser,)
 
     def post(self, request, *args, **kwargs):
@@ -668,7 +668,7 @@ class FacialDataApi_extra(APIView):
                 return Response({'error': 'Missing email parameter'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+        '''
 class OrientationListView(generics.ListAPIView):
     queryset = Orientation.objects.all()
     serializer_class = OrientationSerializer
@@ -1001,3 +1001,80 @@ class OnSiteUserListView(generics.ListAPIView):
     queryset = OnSiteUser.objects.all()
     serializer_class = OnsiteGetSerializer
 
+
+class DeleteFacialDataImage(APIView):
+    def delete(self, request, email, filename):
+        # Get the user based on email
+        user = get_object_or_404(UserEnrolled, email=email)
+        user_folder = os.path.join('facial_data', user.name)
+
+        # Construct the path to the image file
+        file_path = os.path.join(user_folder, filename)
+
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Delete the file
+            os.remove(file_path)
+            return Response("Image deleted successfully", status=status.HTTP_200_OK)
+        else:
+            return Response("Image not found", status=status.HTTP_404_NOT_FOUND)
+
+import pickle
+
+class FacialDataApi(APIView):
+    def post(self, request):
+        serializer = FacialImageDataSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            images = serializer.validated_data['facial_data']
+            try:
+                user = UserEnrolled.objects.get(email=email)
+            except UserEnrolled.DoesNotExist:
+                user = UserEnrolled.objects.create(email=email)
+
+            user_folder = os.path.join('facial_data', str(user.name))
+            if not os.path.exists(user_folder):
+                os.makedirs(user_folder)
+
+            existing_images = self.get_existing_images(user_folder)
+            for index, image in enumerate(images):
+                # Use the original filename of each image
+                image_name = image.name
+                image_path = os.path.join(user_folder, image_name)
+                with open(image_path, 'wb') as f:
+                    for chunk in image.chunks():
+                        f.write(chunk)
+
+            # Train the facial recognition model and update pickle file
+            self.update_pickle(user_folder)
+
+            return Response("Images uploaded and facial data updated successfully", status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_existing_images(self, user_folder):
+        # Return list of existing images in user's directory
+        existing_images = []
+        for file_name in os.listdir(user_folder):
+            if file_name.endswith('.jpg'):
+                existing_images.append(os.path.join(user_folder, file_name))
+        return existing_images
+
+    def update_pickle(self, user_folder):
+        # Remove existing pickle file
+        pickle_file_path = os.path.join(user_folder, 'encodings.pickle')
+        if os.path.exists(pickle_file_path):
+            os.remove(pickle_file_path)
+
+        # Train the facial recognition model with all images in the directory
+        encodings = self.train_facial_data(user_folder)
+
+        # Save encodings to a new pickle file
+        with open(pickle_file_path, 'wb') as f:
+            pickle.dump(encodings, f)
+
+    def train_facial_data(self, user_folder):
+        encodings = []
+        # Train facial data and get encodings for the user's images
+        # Append the encodings to the encodings list
+        return encodings

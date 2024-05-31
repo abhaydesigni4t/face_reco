@@ -171,7 +171,7 @@
         }
 
         table {
-            width: 102%;
+            width: 100%;
             border-collapse: collapse;
             margin-top: 25px;
         }
@@ -324,8 +324,9 @@
         <div class="main-content">
             <form method="post" action="{% url 'delete_selected5' %}">
                 {% csrf_token %}
-                <input type="text" id="filterName" placeholder="Filter by Name">
-                <input type="date" id="filterDate" placeholder="Filter by Date">
+                <input type="text" id="filterName" name="filterName" placeholder="Filter by Name">
+                <input type="date" id="filterDate" name="filterDate" placeholder="Filter by Date">
+                
                 <table id="users">
                     <thead>
                         <tr>
@@ -343,7 +344,7 @@
                             <td>{{ i.name }}</td>
                             <td>{{ i.tag_id }}</td>
                             <td>{{ i.status }}</td>
-                            <td>{{ i.timestamp }}</td>
+                            <td>{{ i.timestamp|date:"Y-m-d" }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -386,12 +387,13 @@
 
                 var name = cols[1].textContent || cols[1].innerText;
                 var timestamp = cols[4].textContent || cols[4].innerText;
+                var date = timestamp.split(' ')[0]; // Extract the date part of the timestamp
 
                 var showRow = true;
                 if (filterName && !name.toUpperCase().includes(filterName)) {
                     showRow = false;
                 }
-                if (filterDate && !timestamp.startsWith(filterDate)) {
+                if (filterDate && date !== filterDate) {
                     showRow = false;
                 }
 
